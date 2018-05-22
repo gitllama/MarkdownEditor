@@ -1,0 +1,29 @@
+{
+  "window" : {
+    "width" : 800,
+    "height" : 600,
+    "devTool" : true
+  },
+  "shortcut" : {
+    "global" : {
+      "ctrl+u" : "SHORTCUT_INC",
+      "ctrl+i" : "SHORTCUT_INC"
+    },
+    "main" : {
+
+    }
+  },
+  "marked-ex":{
+    "marked":{
+      "gfm": true,
+      "tables": true,
+      "breaks": true,
+      "sanitize": false
+    },
+    "mermaid":{
+      "gantt": {
+        "axisFormat": "%m-%d"
+      }
+    }
+  }
+}
