@@ -5,12 +5,14 @@ const initialState = Immutable.Map({
 
   config : null,
 
+  filename : null,
+  text : "# markdown",
+
   title : "",
   docNo : "",
   caution : "DRAFT",
 
   view : "Editor",
-  text : "# markdown",
   html : null
 });
 

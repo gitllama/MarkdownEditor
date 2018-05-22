@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import actions from '../actions'
 import Immutable from 'immutable';
 
-import fs from 'fs';
 import * as markedex from '../logic/marked-ex.js';
 
 const header_height = 18
@@ -50,7 +49,7 @@ const cssCaution={
   "fontSize" : "8em",
   "transform": "rotate(-35deg)",
   "fontWeight": "900",
-  "backgroundColor": "rgba(0, 0, 0, 0.5)"
+  //"backgroundColor": "rgba(0, 0, 0, 0.5)"
 }
 
 

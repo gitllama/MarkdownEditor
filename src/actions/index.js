@@ -10,5 +10,5 @@ export default createActions(
 
   'READFILE_ASYNCLATEST',
   'CHANGE_HEADER',
-
+  'SAVEFILE_ASYNCLATEST',
 );

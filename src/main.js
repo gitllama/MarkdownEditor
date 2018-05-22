@@ -40,6 +40,8 @@ function createWindow () {
 
   createShortcut();
 
+  createIPC();
+
   mainWindow.webContents.on('did-finish-load', function() {
     mainWindow.webContents.send('INIT_ASYNCLATEST', configJson);
   });
@@ -77,12 +79,8 @@ function createMenu() {
       label: 'Menu',
       submenu: [
         {
-          label: 'Exit',
-          accelerator: 'Ctrl+Q',
-          click () { ml.exit(app); }
-        },
-        {
           label: 'FileOpen',
+          accelerator: 'Ctrl+O',
           click () {
             let dst = electron.dialog.showOpenDialog(null, {
                 properties: ['openFile'],
@@ -92,13 +90,32 @@ function createMenu() {
                     {name: 'markdown file', extensions: ['md']}
                 ]
             });
-            mainWindow.webContents.send("READFILE_ASYNCLATEST", dst);
+            if(dst)
+              mainWindow.webContents.send("READFILE_ASYNCLATEST", dst[0]);
           }
         },
+        {type: 'separator'},
+        {
+          label: 'Save',
+          accelerator: 'Ctrl+S',
+          click () { mainWindow.webContents.send("SAVEFILE_ASYNCLATEST", null); }
+        },
+        {
+          label: 'Save As...',
+          accelerator: 'Ctrl+Shift+S',
+          click () { ml.savefileas(mainWindow) }
+        },
+        {type: 'separator'},
         {
           label: 'PrintPDF',
           accelerator: 'Ctrl+P',
           click () { ml.printpdf(mainWindow); }
+        }
+        {type: 'separator'},
+        {
+          label: 'Exit',
+          accelerator: 'Ctrl+Q',
+          click () { ml.exit(); }
         }
       ]
     },
@@ -140,6 +157,7 @@ function createShortcut(){
 }
 
 function createIPC(){
+  ml.registeripc( mainWindow);
   // electron.ipcMain.on('async', function( event, args ){
   //   mainWindow.webContents.send('return', configJson);
   // });
