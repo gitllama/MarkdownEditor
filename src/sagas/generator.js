@@ -11,6 +11,8 @@ function sleep(ms) {
 
 
 export function* init(action) {
+  yield markdownAsync({payload : "# markdown"})
+
   yield put(actions.reducerChange(
     (state)=> state.withMutations(m =>
       m.set('busy', false)
@@ -23,30 +25,34 @@ export function* readfileAsync(action) {
   yield put(actions.reducerChange(
     (state)=> state.withMutations(m => m.set('busy', true))
   ));
-  console.log(action.payload)
+
   let hoge = fs.readFileSync(action.payload).toString()
+
+  yield markdownAsync({payload : hoge})
 
   yield put(actions.reducerChange(
     (state)=> state.withMutations(m =>
       m.set('busy', false)
-      .set('text', hoge)
       .set('filename', action.payload)
     )
   ));
+
   ipcRenderer.send("change-title", action.payload)
   console.log("read!")
 }
 
 export function* savefileAsync(action) {
-  if(action.payload != null){
+  console.log(action)
+  let fullpath = action.payload
+  if(fullpath != null){
     // from Save As
     let txt = yield select(state => state.get("text"))
     // try{
-      fs.writeFileSync(action.payload ,txt);
+      fs.writeFileSync(fullpath ,txt);
       yield put(actions.reducerChange(
-        (state)=> state.withMutations(m => m.set('filename', action.payload))
+        (state)=> state.withMutations(m => m.set('filename', fullpath))
       ));
-      ipcRenderer.send("change-title", filename)
+      ipcRenderer.send("change-title", fullpath)
       console.log("save!")
     // }
     // catch{
@@ -61,14 +67,15 @@ export function* savefileAsync(action) {
 }
 
 export function* markdownAsync(action) {
-  yield put(actions.reducerChange(
-    (state)=> state.withMutations(m => m.set('busy', true))
-  ));
 
-  let contents = fs.readFileSync(action.payload)
-  let dst = markedex.markdownCreate(contents.toString());
+  let dst = markedex.markdownCreate(action.payload,null);
 
   yield put(actions.reducerChange(
-    (state)=> state.withMutations(m => m.set('html', dst).set('busy', false))
+    (state)=> state.withMutations(m =>
+      m.set('html', dst["value"])
+      .set('text', action.payload))
+      .set('title', dst["header"]["title"])
+      .set('docNo', dst["header"]["no"])
+      .set('caution', dst["header"]["caution"])
   ));
 }

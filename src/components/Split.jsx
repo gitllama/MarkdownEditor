@@ -5,8 +5,6 @@ import actions from '../actions'
 import Immutable from 'immutable'
 
 import SplitPane from 'react-split-pane';
-import * as markedex from '../logic/marked-ex.js';
-
 import Editor from './Editor.jsx'
 
 
@@ -50,12 +48,13 @@ class App extends React.Component {
     super(props);
   }
   render() {
+    const html = this.props.state.get("html")
     return (
       <SplitPane split="vertical" defaultSize="50%"
         style={css_SplitPane} paneStyle ={paneStyle} resizerStyle={Resizer} >
         <Editor/>
         <div className="markdown-body" style={css_Right} dangerouslySetInnerHTML={
-          {__html: markedex.markdownCreate(this.props.state.get("text"))}
+          {__html: html}
         } />
       </SplitPane>
     )

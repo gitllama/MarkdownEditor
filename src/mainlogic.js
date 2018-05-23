@@ -33,6 +33,7 @@ exports.exit = function() {
   app.quit();
 }
 
+
 exports.printpdf = function(mainWindow) {
   mainWindow.webContents.printToPDF({
     printBackground: true,
@@ -48,6 +49,7 @@ exports.printpdf = function(mainWindow) {
     })
   });
 }
+
 
 exports.clickViewMenu = function(mainWindow, item){
   const menu = electron.Menu.getApplicationMenu();

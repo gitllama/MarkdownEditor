@@ -35,7 +35,7 @@ const highlightlanguage = {
   }
 };
 
-export function markdownCreate(code, split, config, callback){
+export function markdownCreate(code, config){
 
   let renderer = new marked.Renderer();
 /*
@@ -49,14 +49,14 @@ export function markdownCreate(code, split, config, callback){
                     text + '</h' + level + '>';
   }
 */
-
+  let header = {};
   let highlight =(code, lang)=>{
     try {
       switch(lang){
         case '':
           return;
         case 'header':
-          if(callback) callback(code);
+          header = JSON.parse(code) || {}
           return "";
         case 'mermaid':
           return highlightlanguage['mermaid'](code);
@@ -80,8 +80,5 @@ export function markdownCreate(code, split, config, callback){
 
   mark = mark.replace('<pre><code class="language-header">\n</code></pre>', "" ) ;
 
-  if(split)
-    return mark.split("<hr>");
-  else
-    return mark;
+  return { "value" : mark, "header" : header };
 }

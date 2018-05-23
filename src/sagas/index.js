@@ -16,18 +16,8 @@ const takeSagas = {
     ))
   ),
 
-  ['CHANGE_TEXT'] : (state, action) => (
-    state.withMutations(m => (
-      m.set('text', action.payload)
-    ))
-  ),
-  ['CHANGE_HEADER'] : (state, action) => (
-    state.withMutations(m => (
-      m.set('title', action.payload["title"])
-      .set('docNo', action.payload["docNo"])
-      .set('caution', action.payload["caution"])
-    ))
-  ),
+  ['CHANGE_TEXT_ASYNCLATEST'] : g.markdownAsync,
+
   ['READFILE_ASYNCLATEST'] : g.readfileAsync,
   ['SAVEFILE_ASYNCLATEST'] : g.savefileAsync,
 

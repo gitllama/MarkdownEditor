@@ -94,7 +94,7 @@ function createMenu() {
               mainWindow.webContents.send("READFILE_ASYNCLATEST", dst[0]);
           }
         },
-        {type: 'separator'},
+        { type: 'separator' },
         {
           label: 'Save',
           accelerator: 'Ctrl+S',
@@ -105,13 +105,13 @@ function createMenu() {
           accelerator: 'Ctrl+Shift+S',
           click () { ml.savefileas(mainWindow) }
         },
-        {type: 'separator'},
+        { type: 'separator' },
         {
           label: 'PrintPDF',
           accelerator: 'Ctrl+P',
           click () { ml.printpdf(mainWindow); }
-        }
-        {type: 'separator'},
+        },
+        { type: 'separator' },
         {
           label: 'Exit',
           accelerator: 'Ctrl+Q',

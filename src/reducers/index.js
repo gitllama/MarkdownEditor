@@ -6,7 +6,7 @@ const initialState = Immutable.Map({
   config : null,
 
   filename : null,
-  text : "# markdown",
+  text : null,
 
   title : "",
   docNo : "",

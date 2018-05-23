@@ -32,7 +32,7 @@ class App extends React.Component {
   }
   onChange(newValue){
     // console.log('change', newValue);
-    this.props.actions.changeText(newValue);
+    this.props.actions.changeTextAsynclatest(newValue);
   }
   onSelectionChange(newValue, event) {
     // console.log('select-change', newValue);
@@ -76,11 +76,11 @@ class App extends React.Component {
             fontSize={14}
             showPrintMargin={true} showGutter={true} highlightActiveLine={true}
             setOptions={{
-              enableBasicAutocompletion: false,
-              enableLiveAutocompletion: false,
-              enableSnippets: false,
+              enableBasicAutocompletion: true,
+              enableLiveAutocompletion: true,
+              enableSnippets: true,
               showLineNumbers: true,
-              tabSize: 2,
+              tabSize: 2
             }}
             onLoad={this.onLoad}
             onChange={this.onChange}

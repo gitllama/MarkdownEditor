@@ -6,7 +6,7 @@ import Immutable from 'immutable'
 const {webFrame} = require('electron')
 
 import Editor from './Editor.jsx'
-import A4 from './A4.jsx'
+import A4 from './A4/A4.jsx'
 import Split from './Split.jsx'
 
 const loadimgstyle = {
