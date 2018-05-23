@@ -4,32 +4,38 @@ import { bindActionCreators } from 'redux'
 import actions from '../../actions'
 import Immutable from 'immutable';
 
+import barcode from 'barcode';
+var JsBarcode = require('jsbarcode');
+
+
+
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.inputRef = React.createRef();
+  }
+  componentDidMount() {
+    let hoge = JsBarcode(this.inputRef.current) //JsBarcode(this.node)
+      .options({font: "OCR-B"}) // Will affect all barcodes
+      .CODE128("1234567890128", {height: 5, fontSize: 18, textMargin: 0})
+      .render();
   }
   render() {
-    const footercss =  {
-      "left":"0mm",
-      "width" : "210mm",
-      "display": "flex",
-      "justifyContent": "space-between",
-      //"top" : `${296 - this.props.height}mm`,
-      "height": `${this.props.height}mm`,
-      "position" : "relative",
-    }
     return (
-      <div style={footercss}>
-          <div></div>
-          <div></div>
-          <div>
-            <font color="red" align="right">CONFIDENTIAL</font>
-          </div>
+      <div className="A4-footer">
+        <img ref={this.inputRef}></img>
+        <img ref={node => this.node = node}></img>
+        <div>
+          <font color="red" align="right">CONFIDENTIAL</font>
+        </div>
       </div>
     );
   }
 }
+
+//img ref={this.inputRef}/>
+// ref={node => this.node = node}
 
 export default connect(
   state => ({state}),

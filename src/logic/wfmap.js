@@ -3,9 +3,6 @@ import * as d3 from 'd3';
 const margin = {"top": 20, "left":20,"right":3,"bottom":20}
 
 
-// props.wfmode
-//  mono / color / bin
-
 
 //------------------------------
 

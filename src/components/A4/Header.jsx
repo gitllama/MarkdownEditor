@@ -23,31 +23,34 @@ class App extends React.Component {
     super(props);
   }
   render() {
-    const headercss = {
-      "left":"0mm",
-      "top" : "0mm",
-      "width" : "210mm",
-      "height": `${this.props.height}mm`,
-      "position" : "relative",
-    }
     const title = this.props.state.get("title");
     const page = this.props.page;
-    const docNo = this.props.state.get("docNo");
+    const docNo = this.props.state.get("docNo") || "";
+    const strlength = docNo.length < 12 ? 12 : docNo.length
     return (
-      <div style={headercss}>
-        <img style={{"position" : "absolute", "left":"0mm", "top":"0mm", "height":"10mm"}} src="img/logo.svg"/>
-        <div style={{"position" : "absolute", "left":"0mm", "top":"11mm", "fontSize" : "0.8em"}}>{title}</div>
-        <div style={{"position" : "absolute", "left":"165mm","top":"4mm", "fontSize" : "0.8em"}}>
+      <div className="A4-header">
+        <div>
+          <img style={{"height":"10mm"}} src="img/logo.svg"/>
+          <div style={{"fontSize" : "1em"}}>{title}</div>
+        </div>
+        <div >
           <pre>
-            {"No.  : " + PadLeft(docNo,18)}<br/>
-            {"Date : " + PadLeft(GetDateNow(),18)}<br/>
-            {"Page : " + PadLeft(page,18)}
+            {"No.  : " + PadLeft(docNo,strlength)}<br/>
+            {"Date : " + PadLeft(GetDateNow(),strlength)}<br/>
+            {"Page : " + PadLeft(page,strlength)}
           </pre>
         </div>
       </div>
     );
   }
 }
+
+// style={{"position" : "absolute", "fontSize" : "1em", "bottom":"0", "right":"30"}}
+
+//style={{"position" : "absolute", "left":"0mm", "top":"0mm", "height":"10mm"}
+//<div style={{"position" : "absolute", "left":"0mm", "top":"11mm", "fontSize" : "0.8em"}}>{title}</div>
+//style={{"position" : "absolute", "left":"165mm","top":"4mm", "fontSize" : "0.8em"}}
+
 
 export default connect(
   state => ({state}),

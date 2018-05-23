@@ -10,17 +10,8 @@ class App extends React.Component {
     super(props);
   }
   render() {
-    const bodycss = {
-      "borderWidth":"1px",
-      "borderStyle":"solid",
-      "left":"0mm",
-      //"top" : `${this.props.top}mm`,
-      "width" : "210mm",
-      "height": `${this.props.height}mm`,
-      "position" : "relative",
-    }
     return (
-      <div  className="A4-body" style={bodycss}>
+      <div className="A4-body">
         <div className="markdown-body" dangerouslySetInnerHTML={{__html: this.props.children}} />
       </div>
     );

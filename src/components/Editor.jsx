@@ -25,7 +25,11 @@ class App extends React.Component {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.onLoad = this.onLoad.bind(this);
+    this.inputRef = React.createRef();
   }
+  // componentDidMount() {
+  //   this.inputRef.current.focus();
+  // }
   onLoad(editor){
     // this.editor=editor;
     console.log('i\'ve loaded');

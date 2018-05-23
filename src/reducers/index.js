@@ -2,18 +2,17 @@ import Immutable from 'immutable';
 
 const initialState = Immutable.Map({
   busy : true,
-
   config : null,
 
   filename : null,
   text : null,
+  html : null,
 
   title : "",
   docNo : "",
   caution : "DRAFT",
 
-  view : "Editor",
-  html : null
+  view : "Editor"
 });
 
 const reducers = {

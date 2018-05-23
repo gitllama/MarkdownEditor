@@ -10,29 +10,6 @@ import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 import Body from './Body.jsx';
 
-const header_height = 18;
-const footer_height = 5;
-
-// const sectioncss = {
-//   "width":"210mm",
-//   "height":"296mm", /* 1mm余裕をもたせる */
-//   "pageBreakAfter": "always",
-//   "position": "relative"
-// }
-
-const cssCaution={
-  "textAlign" : "center",
-  "position": "absolute",
-  "left":"10mm",
-  "top":"130mm",
-  "opacity":"0.3",
-  "width": "190mm",
-  "fontSize" : "8em",
-  "transform": "rotate(-35deg)",
-  "fontWeight": "900",
-  //"backgroundColor": "rgba(0, 0, 0, 0.5)"
-}
-//style={sectioncss}
 
 class App extends React.Component {
   constructor(props) {
@@ -44,12 +21,10 @@ class App extends React.Component {
     hoge.forEach((v,i)=>{
       pages.push(
         <section className="sheet" key={i} >
-          <Header height={header_height} page={`${parseInt(i)+1}/${hoge.length}`} />
-          <Body height={296 - header_height - footer_height}>
-            {v}
-          </Body>
-          <Footer height={footer_height} />
-          <div style={cssCaution}>{this.props.state.get("caution")}</div>
+          <Header page={`${parseInt(i)+1}/${hoge.length}`} />
+          <Body>{v}</Body>
+          <Footer/>
+          <div className="A4-caution">{this.props.state.get("caution")}</div>
         </section>
       );
     })
