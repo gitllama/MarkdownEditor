@@ -36,6 +36,7 @@ exports.exit = function() {
 
 exports.printpdf = function(mainWindow) {
   mainWindow.webContents.printToPDF({
+    marginsType : 0,
     printBackground: true,
     printSelectionOnly: false,
     pageSize: 'A4'
