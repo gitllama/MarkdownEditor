@@ -6,18 +6,15 @@
   },
   "shortcut" : {
     "global" : {
-      "ctrl+i" : "SHORTCUT_INC"
     },
     "main" : {
-
     }
   },
   "marked-ex":{
     "marked":{
       "gfm": true,
       "tables": true,
-      "breaks": true,
-      "sanitize": false
+      "breaks": true
     },
     "mermaid":{
       "gantt": {

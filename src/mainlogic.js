@@ -36,10 +36,11 @@ exports.exit = function() {
 
 exports.printpdf = function(mainWindow) {
   mainWindow.webContents.printToPDF({
-    marginsType : 1, // for no margin
+    marginsType : 0, // for no margin
     printBackground: true,
     printSelectionOnly: false,
-    pageSize: 'A4'
+    pageSize: 'A4',
+    //landscape : false
   }, (error, data) => {
     if (error) throw error
     fs.writeFile('print.pdf', data, (error) => {

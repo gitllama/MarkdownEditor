@@ -17,6 +17,21 @@ mermaid.mermaidAPI.initialize({
   }
 });
 
+function checkObject(obj, arr){
+  if(obj == null) return null;
+  let dst = null;
+  if(arr.length > 1){
+    if(obj[arr[0]]){
+      let hoge = arr.slice()
+      hoge.shift()
+      return checkObject(obj[arr[0]],hoge)
+    }else{
+      return null;
+    }
+  }
+  return obj[arr[0]];
+}
+
 const highlightlanguage = {
   ['mermaid'] : (code)=>{
     let dst;
@@ -38,17 +53,16 @@ const highlightlanguage = {
 export function markdownCreate(code, config){
 
   let renderer = new marked.Renderer();
-/*
-  renderer.heading =(text, level)=> {
-    var escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
-    return '<h' + level + '><a name="' +
-                  escapedText +
-                   '" class="anchor" href="#' +
-                   escapedText +
-                   '"><span class="header-link"></span></a>' +
-                    text + '</h' + level + '>';
-  }
-*/
+  // renderer.heading =(text, level)=> {
+  //   var escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
+  //   return '<h' + level + '><a name="' +
+  //                 escapedText +
+  //                  '" class="anchor" href="#' +
+  //                  escapedText +
+  //                  '"><span class="header-link"></span></a>' +
+  //                   text + '</h' + level + '>';
+  // }
+
   let header = {};
   let highlight =(code, lang)=>{
     try {
@@ -69,14 +83,16 @@ export function markdownCreate(code, config){
       //dst = code;
     }
   };
-  marked.setOptions({
-    langPrefix: ''
-  });
-  let mark = marked(code, {
-        renderer: renderer,
-        highlight: highlight,
-        langPrefix: 'language-'
-    });
+
+  marked.setOptions({ langPrefix : ''});
+  let mark = marked(code, Object.assign(
+    {
+      renderer: renderer,
+      highlight: highlight,
+      langPrefix: 'language-'
+    },
+    checkObject(config, ["marked"])
+  ));
 
   mark = mark.replace('<pre><code class="language-header">\n</code></pre>', "" ) ;
 

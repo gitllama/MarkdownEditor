@@ -11,12 +11,17 @@ function sleep(ms) {
 
 
 export function* init(action) {
+  yield put(actions.reducerChange(
+    (state)=> state.withMutations(m =>
+      m.set('config', action.payload)
+    )
+  ));
+
   yield markdownAsync({payload : "# markdown"})
 
   yield put(actions.reducerChange(
     (state)=> state.withMutations(m =>
       m.set('busy', false)
-      .set('config', action.payload)
     )
   ));
 }
@@ -67,8 +72,8 @@ export function* savefileAsync(action) {
 }
 
 export function* markdownAsync(action) {
-
-  let dst = markedex.markdownCreate(action.payload,null);
+  let config = yield select(state => state.get("config"))
+  let dst = markedex.markdownCreate(action.payload, config["marked-ex"]);
 
   yield put(actions.reducerChange(
     (state)=> state.withMutations(m =>

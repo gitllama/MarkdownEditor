@@ -20,10 +20,10 @@ class App extends React.Component {
     let hoge = this.props.state.get("html").split("<hr>")
     hoge.forEach((v,i)=>{
       pages.push(
-        <section className="sheet" key={i} >
-          <Header page={`${parseInt(i)+1}/${hoge.length}`} />
-          <Body>{v}</Body>
-          <Footer/>
+        <section className="sheet" key={"section"+i} >
+          <Header key={"Header"+i} page={`${parseInt(i)+1}/${hoge.length}`} />
+          <Body key={"Body"+i}>{v}</Body>
+          <Footer key={"Footer"+i}/>
           <div className="A4-caution">{this.props.state.get("caution")}</div>
         </section>
       );

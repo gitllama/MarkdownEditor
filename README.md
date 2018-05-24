@@ -2,6 +2,9 @@
 
 ## Description
 
+## bug
+
+pdf時tableレイアウト崩壊
 
 ## Future
 
