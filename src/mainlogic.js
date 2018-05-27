@@ -36,7 +36,7 @@ exports.exit = function() {
 
 exports.printpdf = function(mainWindow) {
   mainWindow.webContents.printToPDF({
-    marginsType : 0, // for no margin
+    marginsType : 1, // Uses 0 for default margin, 1 for no margin, and 2 for minimum margin.
     printBackground: true,
     printSelectionOnly: false,
     pageSize: 'A4',

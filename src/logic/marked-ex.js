@@ -1,6 +1,3 @@
-import actions from '../actions';
-import { call, put, take, select, fork, takeEvery, takeLatest } from 'redux-saga/effects'
-import Immutable from 'immutable';
 //import crypto from 'crypto'; //ハッシュ化
 
 //import wavedrom from 'wavedrom';
@@ -94,7 +91,9 @@ export function markdownCreate(code, config){
     checkObject(config, ["marked"])
   ));
 
-  mark = mark.replace('<pre><code class="language-header">\n</code></pre>', "" ) ;
+  mark = mark.replace('<pre><code class="language-header">\n</code></pre>', "" );
+
+  console.log(mark)
 
   return { "value" : mark, "header" : header };
 }

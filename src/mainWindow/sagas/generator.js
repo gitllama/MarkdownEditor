@@ -3,7 +3,7 @@ import actions from '../actions';
 import { ipcRenderer } from 'electron'
 
 import fs from 'fs';
-import * as markedex from '../logic/marked-ex.js';
+import * as markedex from '../../logic/marked-ex.js';
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));

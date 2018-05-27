@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../actions'
 import Immutable from 'immutable';
-import wfmap from '../logic/wfmap.js'
+import wfmap from '../../../logic/wfmap.js'
 
 
 class App extends React.Component {

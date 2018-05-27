@@ -50,7 +50,7 @@ class App extends React.Component {
     }
     const busycheck =(i)=>{
       if(i)
-        return <img style={loadimgstyle} src="img/loding.gif" />;
+        return <img style={loadimgstyle} src="../img/loding.gif" />;
       else
         return viewselector(this.props.state.get("view"));
     }

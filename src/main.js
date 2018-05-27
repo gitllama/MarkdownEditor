@@ -8,37 +8,44 @@ const configJson = require('../config.json');
 const ml = require('./mainlogic.js');
 
 
-app.on('ready', function() {
+app.on('ready', ()=> {
   createWindow()
+  createShortcut();
 });
 
-app.on('activate', function() {
+app.on('activate', ()=> {
   if (mainWindow === null) {
     createWindow()
   }
 });
 
-app.on('window-all-closed', function() {
+app.on('window-all-closed', ()=> {
   if (process.platform !== 'darwin') {
     app.quit()
   }
 });
 
-process.on('uncaughtException', function (error) {
+process.on('uncaughtException', (error)=> {
     console.error(error);
 });
 
 
+function createShortcut(){
+  const globalShortcut = electron.globalShortcut;
+  const registerShortcut = configJson["shortcut"]["global"];
+  for(let key in registerShortcut){
+    globalShortcut.register(key, () => {
+      mainWindow.webContents.send(key, registerShortcut[key]);
+    })
+  }
+}
+
+
 function createWindow () {
 
-  createBrowserWindow();
-
-  if(configJson["window"]["devTool"])
-    mainWindow.webContents.openDevTools();
+  mainWindow = createBrowserWindow('./mainWindow/index.html', configJson["window"])
 
   createMenu();
-
-  createShortcut();
 
   createIPC();
 
@@ -53,22 +60,26 @@ function createWindow () {
 };
 
 
-function createBrowserWindow () {
+function createBrowserWindow (indexpath, config) {
 
-  mainWindow = new electron.BrowserWindow({
+  let obj = new electron.BrowserWindow({
     title: app.getName(),
-    width: configJson["window"]["width"],
-    height: configJson["window"]["height"],
+    width: config["width"],
+    height: config["height"],
     //frame: false,
     //transparent: true
-    kiosk : configJson["window"]["kiosk"] || false //全画面で専用端末画面みたいにできる
+    kiosk : config["kiosk"] || false //全画面で専用端末画面みたいにできる
   });
 
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
+  obj.loadURL(url.format({
+    pathname: path.join(__dirname, indexpath),
     protocol: 'file:',
     slashes: true
   }));
+
+  if(config["devTool"]) obj.webContents.openDevTools();
+
+  return obj;
 };
 
 function createMenu() {
@@ -120,6 +131,21 @@ function createMenu() {
       ]
     },
     {
+      label: 'Edit',
+      submenu: [
+        { role: 'undo' },
+        { role: 'redo' },
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { role: 'selectall' },
+        { type: 'separator' },
+        { role: 'togglefullscreen' },
+        { role: 'toggleDevTools' },
+      ]
+    },
+    {
       label: 'View',
       submenu: [
         {
@@ -146,15 +172,7 @@ function createMenu() {
   ]));
 }
 
-function createShortcut(){
-  const globalShortcut = electron.globalShortcut;
-  const registerShortcut = configJson["shortcut"]["global"];
-  for(let key in registerShortcut){
-    globalShortcut.register(key, () => {
-      mainWindow.webContents.send(key, registerShortcut[key]);
-    })
-  }
-}
+
 
 function createIPC(){
   ml.registeripc( mainWindow);

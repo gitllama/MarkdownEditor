@@ -515,7 +515,6 @@ function renderLegend(code, node) {
   return elem.outerHTML;
 }
 
-
 function render(code, node) {
   let elem = node || document.createElement("svg");
   let canvas = d3.select(elem)
@@ -539,6 +538,21 @@ function render(code, node) {
   return elem.outerHTML;
 }
 
+function multipleRender(code, node) {
+
+  let param = parse(code);
+
+  if(Array.isArray(param)){
+    let dst = '<div display="flex" justifyContent=spaceBetween">'
+    param.forEach((v)=>{
+      dst = dst + render(code, node)
+    })
+    return dst + '</div>'
+
+  }else{
+    return render(code, node)
+  }
+}
 
 export default {
   render,
