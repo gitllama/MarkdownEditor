@@ -5,7 +5,7 @@ import mermaid from 'mermaid';
 import fs from 'fs';
 import marked from 'marked';
 import hljs from 'highlight.js';
-import wfmap from './wfmap.js';
+import wfmap from 'wfmap';
 
 mermaid.mermaidAPI.initialize({
   startOnLoad: false,
@@ -40,7 +40,8 @@ const highlightlanguage = {
     return dst;
   },
   ['wfmap'] : (code)=>{
-    return wfmap.render(code)
+    let node = document.createElement("div")
+    return wfmap.render(code, node).innerHTML
   },
   ['default'] : (code, lang)=>{
     return hljs.getLanguage(lang) ? hljs.highlight(lang, code, true).value : code;
