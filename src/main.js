@@ -2,10 +2,12 @@ const electron = require('electron');
 const app = electron.app;
 const path = require('path');
 const url = require('url');
+const ipcMain = electron.ipcMain;
 
 let mainWindow;
+let subWindow;
 const configJson = require('../config.json');
-const ml = require('./mainlogic.js');
+const ml = require('./logic.js');
 
 
 app.on('ready', ()=> {
@@ -43,11 +45,33 @@ function createShortcut(){
 
 function createWindow () {
 
-  mainWindow = createBrowserWindow('./mainWindow/index.html', configJson["window"])
+  createBrowserWindow('./mainWindow/index.html', configJson["window"])
 
   createMenu();
 
   createIPC();
+
+};
+
+
+function createBrowserWindow (indexpath, config) {
+
+  mainWindow = new electron.BrowserWindow({
+    title: app.getName(),
+    width: config["width"],
+    height: config["height"],
+    //frame: false,
+    //transparent: true
+    kiosk : config["kiosk"] || false //全画面で専用端末画面みたいにできる
+  });
+
+  mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, indexpath),
+    protocol: 'file:',
+    slashes: true
+  }));
+
+  // if(config["devTool"]) mainWindow.webContents.openDevTools();
 
   mainWindow.webContents.on('did-finish-load', function() {
     mainWindow.webContents.send('INIT_ASYNCLATEST', configJson);
@@ -57,29 +81,34 @@ function createWindow () {
     mainWindow = null
   });
 
+  return;
 };
 
+function createBrowserSubWindow (indexpath, config) {
+  if(subWindow == null){
+    subWindow = new electron.BrowserWindow({
+      title: app.getName(),
+      width: config["width"],
+      height: config["height"],
+      //frame: false,
+      //transparent: true
+      //kiosk : config["kiosk"] || false //全画面で専用端末画面みたいにできる
+    });
 
-function createBrowserWindow (indexpath, config) {
+    subWindow.loadURL(url.format({
+      pathname: path.join(__dirname, indexpath),
+      protocol: 'file:',
+      slashes: true
+    }));
 
-  let obj = new electron.BrowserWindow({
-    title: app.getName(),
-    width: config["width"],
-    height: config["height"],
-    //frame: false,
-    //transparent: true
-    kiosk : config["kiosk"] || false //全画面で専用端末画面みたいにできる
-  });
+    subWindow.on('closed', ()=>{
+      subWindow = null
+    });
 
-  obj.loadURL(url.format({
-    pathname: path.join(__dirname, indexpath),
-    protocol: 'file:',
-    slashes: true
-  }));
-
-  if(config["devTool"]) obj.webContents.openDevTools();
-
-  return obj;
+    return;
+  }else{
+    return;
+  }
 };
 
 function createMenu() {
@@ -91,7 +120,7 @@ function createMenu() {
       submenu: [
         {
           label: 'FileOpen',
-          accelerator: 'Ctrl+O',
+          accelerator: 'CmdOrCtrl+O',
           click () {
             let dst = electron.dialog.showOpenDialog(null, {
                 properties: ['openFile'],
@@ -108,24 +137,24 @@ function createMenu() {
         { type: 'separator' },
         {
           label: 'Save',
-          accelerator: 'Ctrl+S',
+          accelerator: 'CmdOrCtrl+S',
           click () { mainWindow.webContents.send("SAVEFILE_ASYNCLATEST", null); }
         },
         {
           label: 'Save As...',
-          accelerator: 'Ctrl+Shift+S',
+          accelerator: 'CmdOrCtrl+Shift+S',
           click () { ml.savefileas(mainWindow) }
         },
         { type: 'separator' },
         {
           label: 'PrintPDF',
-          accelerator: 'Ctrl+P',
+          accelerator: 'CmdOrCtrl+P',
           click () { ml.printpdf(mainWindow); }
         },
         { type: 'separator' },
         {
           label: 'Exit',
-          accelerator: 'Ctrl+Q',
+          accelerator: 'CmdOrCtrl+Q',
           click () { ml.exit(); }
         }
       ]
@@ -165,6 +194,25 @@ function createMenu() {
           type: 'checkbox',
           checked: false,
           click (i) { ml.clickViewMenu(mainWindow, i); }
+        },
+        { type: 'separator' },
+        {
+          label: 'Sub',
+          click () { createBrowserSubWindow('./subWindow/index.html', configJson["window"]); }
+        },
+        {
+          label: 'Next',
+          accelerator: 'Alt+N',
+          click (i) {
+            if(subWindow) subWindow.webContents.send('page', 1);
+          }
+        },
+        {
+          label: 'Back',
+          accelerator: 'Alt+B',
+          click (i) {
+            if(subWindow) subWindow.webContents.send('page', -1);
+          }
         }
 
       ]
@@ -175,10 +223,39 @@ function createMenu() {
 
 
 function createIPC(){
-  ml.registeripc( mainWindow);
-  // electron.ipcMain.on('async', function( event, args ){
-  //   mainWindow.webContents.send('return', configJson);
-  // });
+
+  ipcMain.on('change-text', ( event, args )=>{
+    console.log(subWindow, args)
+    if(subWindow)
+      subWindow.webContents.send('change-text', args);
+  });
+  ipcMain.on('change-cursor', ( event, args )=>{
+    if(subWindow)
+      subWindow.webContents.send('change-cursor', args);
+  });
+
+  ipcMain.on('change-title', function (event, arg) {
+    mainWindow.setTitle(`${arg} - ${app.getName()}`);
+  });
+
+  ipcMain.on('save-file', function (event, arg) {
+    console.log('save-file',arg)
+    if(arg != null){
+      mainWindow.webContents.send("SAVEFILE_ASYNCLATEST", arg);
+    }else{
+      let dst = electron.dialog.showSaveDialog(null, {
+        title: 'Save As',
+        defaultPath: '.',
+        filters: [
+            {name: 'markdown file', extensions: ['md']}
+        ]
+      });
+      if(dst !== undefined){
+        mainWindow.webContents.send("SAVEFILE_ASYNCLATEST", dst);
+      }
+    }
+  });
+
 }
 
 // const clipboard = electron.clipboard;

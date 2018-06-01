@@ -30,7 +30,7 @@ class App extends React.Component {
     return (
       <div className="A4-header">
         <div>
-          <img style={{"height":"10mm"}} src="img/logo.svg"/>
+          <img style={{"height":"10mm"}} src="../img/logo.svg"/>
           <div style={{"fontSize" : "1em"}}>{title}</div>
         </div>
         <div >
