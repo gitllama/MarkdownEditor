@@ -3,36 +3,10 @@ const ipcMain = electron.ipcMain;
 const app = electron.app;
 const fs = require('fs');
 
-exports.registeripc = function(mainWindow) {
-
-  ipcMain.on('change-title', function (event, arg) {
-    mainWindow.setTitle(`${arg} - ${app.getName()}`);
-  });
-
-  ipcMain.on('save-file', function (event, arg) {
-    console.log('save-file',arg)
-    if(arg != null){
-      mainWindow.webContents.send("SAVEFILE_ASYNCLATEST", arg);
-    }else{
-      let dst = electron.dialog.showSaveDialog(null, {
-        title: 'Save As',
-        defaultPath: '.',
-        filters: [
-            {name: 'markdown file', extensions: ['md']}
-        ]
-      });
-      if(dst !== undefined){
-        mainWindow.webContents.send("SAVEFILE_ASYNCLATEST", dst);
-      }
-    }
-  });
-}
-
 
 exports.exit = function() {
   app.quit();
 }
-
 
 exports.printpdf = function(mainWindow) {
   mainWindow.webContents.printToPDF({

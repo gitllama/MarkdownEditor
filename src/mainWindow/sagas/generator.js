@@ -83,4 +83,6 @@ export function* markdownAsync(action) {
       .set('docNo', dst["header"]["no"])
       .set('caution', dst["header"]["caution"])
   ));
+
+  ipcRenderer.send("change-text", action.payload)
 }

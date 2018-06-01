@@ -15,15 +15,32 @@ const store = createStore(reducer, applyMiddleware(sagaMiddleware))
 sagaMiddleware.run(rootSaga)
 
 
-Object.keys(actions).forEach((key)=>{
-  ipcRenderer.on(actions[key].toString(), (event, param) =>{
-    store.dispatch({
-      type  : actions[key].toString(),
-      payload : param
-    });
-  })
+ipcRenderer.on("change-text", (event, param) =>{
+  store.dispatch({
+    type  : "CHANGE_TEXT_ASYNCLATEST",
+    payload : param
+  });
+});
+ipcRenderer.on("change-cursor", (event, param) =>{
+  store.dispatch({
+    type  : "CHANGE_CURSOR_ASYNCLATEST",
+    payload : param
+  });
 });
 
+ipcRenderer.on("resize", (event, param) =>{
+  store.dispatch({
+    type  : "CHANGE_ZOOM",
+    payload : param
+  });
+});
+
+ipcRenderer.on("page", (event, param) =>{
+  store.dispatch({
+    type  : "PAGE",
+    payload : param
+  });
+});
 
 ReactDOM.render(
   <Provider store={store}>
