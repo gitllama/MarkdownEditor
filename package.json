@@ -1,10 +1,6 @@
 {
   "name": "MarkdownEditor",
-<<<<<<< HEAD
   "version": "0.0.1",
-=======
-  "version": "1.0.0",
->>>>>>> 45c259f203bd279b1f4f2def29fe34fbfd5baebc
   "description": "",
   "main": "src/main.js",
   "scripts": {
@@ -32,10 +28,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
-<<<<<<< HEAD
-=======
     "diff": "^3.5.0",
->>>>>>> 45c259f203bd279b1f4f2def29fe34fbfd5baebc
     "highlight.js": "^9.12.0",
     "immutable": "^3.8.2",
     "jsbarcode": "^3.9.0",
