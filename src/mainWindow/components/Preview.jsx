@@ -5,19 +5,19 @@ import actions from '../actions'
 import Immutable from 'immutable'
 const {webFrame} = require('electron')
 
-import Editor from './Editor.jsx'
-import Split from './Split.jsx'
-import Preview from './Preview.jsx'
+import Default from './Default/App.jsx'
+import A4 from './A4/A4.jsx'
+// import Split from './Split.jsx'
 
-const loadimgstyle = {
-  "position": "absolute",
-  "top":"0",
-  "left":"0",
-  "bottom":"0",
-  "right":"0",
-  "margin": "auto"
+const css_Right={
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 1,
+  overflowX : "auto",
+  overflowY : "auto"
 }
-
 
 class App extends React.Component {
   constructor(props) {
@@ -25,15 +25,23 @@ class App extends React.Component {
     //const configJson = this.props.state.get("config");
     //this.props.actions.readwelcomeAsynclatest(`${configJson["data"]["path"]}/welcome.md`)
   }
+  onmousewheel(i){
+    if(i.ctrlKey){
+      if(i.deltaY<0)
+        webFrame.setZoomLevel(webFrame.getZoomLevel()+1);
+      else if(i.deltaY>0)
+        webFrame.setZoomLevel(webFrame.getZoomLevel()-1);
+    }
+      //console.log(i.deltaX,i.deltaY,i.deltaZ)
+      //webFrame.setZoomFactor(webFrame.getZoomFactor()*2);
+  }
   render() {
     const viewselector =(i)=>{
       switch(i){
-        case "Editor":
-          return ( <Editor/> );
-        case "Split":
-          return ( <Split /> );
-        case "Preview":
-          return ( <Preview /> );
+        case "Default":
+          return ( <Default /> );
+        case "A4":
+          return ( <A4 /> );
         default:
           return ( <div>ERR</div> );
       }
@@ -42,10 +50,12 @@ class App extends React.Component {
       if(i)
         return <img style={loadimgstyle} src="../img/loding.gif" />;
       else
-        return viewselector(this.props.state.get("view"));
+        return viewselector(this.props.state.get("viewtype"));
     }
     return (
-      <div>
+      <div
+        onWheel={(i) => this.onmousewheel(i)}
+        style={css_Right}>
         {busycheck(this.props.state.get("busy"))}
       </div>
     );

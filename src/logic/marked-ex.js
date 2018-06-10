@@ -6,6 +6,7 @@ import fs from 'fs';
 import marked from 'marked';
 import hljs from 'highlight.js';
 import wfmap from 'wfmap';
+import Plotly from 'plotly.js';
 
 mermaid.mermaidAPI.initialize({
   startOnLoad: false,
@@ -13,6 +14,21 @@ mermaid.mermaidAPI.initialize({
     axisFormat: '%m-%d'
   }
 });
+
+var plotlylayout = {
+  autosize: false,
+  width: "100mm",
+  height: "100mm",
+  // margin: {
+  //   l: 50,
+  //   r: 50,
+  //   b: 100,
+  //   t: 100,
+  //   pad: 4
+  // },
+  paper_bgcolor: '#7f7f7f',
+  plot_bgcolor: '#c7c7c7'
+};
 
 function checkObject(obj, arr){
   if(obj == null) return null;
@@ -43,6 +59,13 @@ const highlightlanguage = {
     let node = document.createElement("div")
     return wfmap.render(code, node).innerHTML
   },
+  ['plotly'] : (code)=>{
+    let node = document.createElement("div");
+    Plotly.newPlot(node, JSON.parse(code));
+    return '\n</code></pre>'
+            + node.outerHTML
+            + '<pre><code class="language-plotly">'
+  },
   ['default'] : (code, lang)=>{
     return hljs.getLanguage(lang) ? hljs.highlight(lang, code, true).value : code;
   }
@@ -72,6 +95,8 @@ export function markdownCreate(code, config){
           return "";
         case 'mermaid':
           return highlightlanguage['mermaid'](code);
+        case 'plotly':
+          return highlightlanguage['plotly'](code);
         case 'wfmap':
           return highlightlanguage['wfmap'](code);
         default:
@@ -92,9 +117,11 @@ export function markdownCreate(code, config){
     checkObject(config, ["marked"])
   ));
 
-  mark = mark.replace('<pre><code class="language-header">\n</code></pre>', "" );
+  mark = mark
+          .replace(/<pre><code class="language-header">\n<\/code><\/pre>/g, "" )
+          .replace(/<pre><code class="language-plotly">\n<\/code><\/pre>/g, "" );
 
-  console.log(mark)
+  // console.log(mark)
 
   return { "value" : mark, "header" : header };
 }

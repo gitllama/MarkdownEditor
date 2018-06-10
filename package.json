@@ -34,6 +34,7 @@
     "jsbarcode": "^3.9.0",
     "marked": "^0.3.19",
     "mermaid": "^8.0.0-rc.8",
+    "plotly.js": "^1.38.2",
     "react": "^16.3.2",
     "react-ace": "^6.1.1",
     "react-dom": "^16.3.2",
@@ -42,6 +43,7 @@
     "redux": "^4.0.0",
     "redux-actions": "^2.3.2",
     "redux-saga": "^0.16.0",
+    "styled-components": "^3.3.2",
     "wfmap": "github:gitllama/wfmap"
   },
   "devDependencies": {

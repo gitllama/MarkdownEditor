@@ -278,6 +278,8 @@ Create diagrams in markdown using WfMap.js code blocks:
 }
 ```
 
+When "config" and "legend" are omitted, the previous one will be referenced.
+
 ```wfmap
 {
   "data":{
@@ -302,5 +304,42 @@ Create diagrams in markdown using WfMap.js code blocks:
     {"y" : 4, "x": 5, "value": 39}
     ]
   }
+}
+```
+
+***
+
+## 4. Plot
+
+Create Graph in markdown using D3.js code blocks:
+
+> \`\`\`plot  
+> [code]  
+>  \`\`\`  
+
+### 4-1. An example
+
+```plotly
+{
+    "data": [
+        {
+            "x": [
+                "giraffes",
+                "orangutans",
+                "monkeys"
+            ],
+            "y": [
+                20,
+                14,
+                23
+            ],
+            "type": "bar"
+        }
+    ],
+    "layout" : {
+      "autosize": false,
+      "width": "500",
+      "height": "500"
+    }
 }
 ```

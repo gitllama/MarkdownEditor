@@ -190,7 +190,7 @@ function createMenu() {
           click (i) { ml.clickViewMenu(mainWindow, i); }
         },
         {
-          label: 'A4',
+          label: 'Preview',
           type: 'checkbox',
           checked: false,
           click (i) { ml.clickViewMenu(mainWindow, i); }

@@ -6,6 +6,8 @@ import Immutable from 'immutable'
 
 import SplitPane from 'react-split-pane';
 import Editor from './Editor.jsx'
+import Preview from './Preview.jsx'
+
 
 
 const paneStyle = {
@@ -31,16 +33,8 @@ const Resizer  = {
   cursor: 'col-resize',
 };
 
-const css_Right={
-  background: '#FFF',
-  position: 'absolute',
-  top: 0,
-  right: 0,
-  bottom: 0,
-  left: 1,
-  overflowX : "auto",
-  overflowY : "auto"
-}
+
+
 
 
 class App extends React.Component {
@@ -48,14 +42,11 @@ class App extends React.Component {
     super(props);
   }
   render() {
-    const html = this.props.state.get("html")
     return (
       <SplitPane split="vertical" defaultSize="50%"
         style={css_SplitPane} paneStyle ={paneStyle} resizerStyle={Resizer} >
         <Editor/>
-        <div className="markdown-body" style={css_Right} dangerouslySetInnerHTML={
-          {__html: html}
-        } />
+        <Preview/>
       </SplitPane>
     )
   }

@@ -12,7 +12,8 @@ const initialState = Immutable.Map({
   docNo : "",
   caution : "DRAFT",
 
-  view : "Editor"
+  view : "Editor",
+  viewtype : "Default"
 });
 
 const reducers = {

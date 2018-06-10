@@ -44,7 +44,7 @@ ipcRenderer.on("page", (event, param) =>{
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Preview />
   </Provider>,
   document.getElementById('root')
 );
