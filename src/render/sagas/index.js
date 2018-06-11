@@ -20,6 +20,11 @@ const takeSagas = {
       m.set('preview', action.payload)
     ))
   ),
+  ['PAGE_CHANGE'] : (state, action) => (
+    state.withMutations(m => (
+      m.set('page', state.get("page") + action.payload)
+    ))
+  ),
 
   ['CHANGE_TEXT_ASYNCLATEST'] : g.markdownAsync,
 
@@ -66,3 +71,44 @@ export default function* rootSaga() {
     yield fork(setTake, key, takeSagas[key]);
   }
 }
+
+
+
+// ["CHANGE_ZOOM"] : (state, action) => (
+//   state.withMutations(m => (
+//     m.set('size', action.payload)
+//   ))
+// ),
+
+// function* changeText(action) {
+//   let html = "";
+//   let dst = markedex.markdownCreate(action.payload, null);
+//
+//
+//   if(dst["header"]["diff"] == true){
+//     const markold = markedex.markdownCreate(fs.readFileSync("default.md").toString(), null);
+//     let dst_diff = jsdiff.diffWords(markold["value"], dst["value"])
+//
+//     dst_diff.forEach((part)=>{
+//
+//       var color
+//         = part.added   ? "<font color='green'>"+part.value+"</font>"
+//         : part.removed ? "<font color='red'>"+part.value+"</font>"
+//         : part.value;
+//       html = html + color;
+//     });
+//   }else{
+//     if(dst["header"]["page-break"] == true){
+//       html = dst["value"].split("<hr>");
+//     }else{
+//       html = dst["value"]
+//     }
+//   }
+//
+//
+//   yield put(mutation(m=>
+//     m.set('html', html)
+//     .set('zoom', dst["header"]["zoom"] || 1)
+//   ));
+//
+// }

@@ -34,6 +34,12 @@ ipcRenderer.on("preview-change", (event, param) =>{
     payload : param
   });
 });
+ipcRenderer.on("page-change", (event, param) =>{
+  store.dispatch({
+    type  : "PAGE_CHANGE",
+    payload : param
+  });
+});
 
 Object.keys(actions).forEach((key)=>{
   ipcRenderer.on(actions[key].toString(), (event, param) =>{

@@ -7,17 +7,18 @@ const {webFrame} = require('electron')
 
 import Default from './Default/App.jsx'
 import A4 from './A4/A4.jsx'
-// import Split from './Split.jsx'
+import Slide from './Slide/App.jsx'
 
-const css_Right={
-  position: 'absolute',
-  top: 0,
-  right: 0,
-  bottom: 0,
-  left: 1,
-  overflowX : "auto",
-  overflowY : "auto"
-}
+import styled from 'styled-components';
+const DIVS = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 1;
+  width : 100%;
+  height : 100%;
+`;
 
 class App extends React.Component {
   constructor(props) {
@@ -42,16 +43,16 @@ class App extends React.Component {
           return ( <Default /> );
         case "A4":
           return ( <A4 /> );
+        case "Slide":
+          return ( <Slide /> );
         default:
           return ( <div>ERR</div> );
       }
     }
     return (
-      <div
-        onWheel={(i) => this.onmousewheel(i)}
-        style={css_Right}>
+      <DIVS onWheel={(i) => this.onmousewheel(i)}>
         {viewselector(this.props.state.get("preview"))}
-      </div>
+      </DIVS>
     );
   }
 }

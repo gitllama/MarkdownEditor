@@ -6,18 +6,16 @@ const initialState = Immutable.Map({
 
   filename : null,
   text : null,
-  html : null,
+  view : "Editor",
 
+  preview : "Default",
   title : "",
   docNo : "",
   caution : "DRAFT",
-
-  view : "Editor",
-  preview : "Default",
+  html : null,
 
   zoom : 1,
   size : 1,
-
   page : 1
 });
 

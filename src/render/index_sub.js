@@ -21,10 +21,15 @@ ipcRenderer.on("sync-html", (event, param) =>{
     payload : param
   });
 });
-
 ipcRenderer.on("preview-change", (event, param) =>{
   store.dispatch({
     type  : "PREVIEW_CHANGE",
+    payload : param
+  });
+});
+ipcRenderer.on("page-change", (event, param) =>{
+  store.dispatch({
+    type  : "PAGE_CHANGE",
     payload : param
   });
 });

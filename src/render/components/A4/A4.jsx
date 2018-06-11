@@ -11,39 +11,6 @@ import Footer from './Footer.jsx';
 import Body from './Body.jsx';
 
 import styled from 'styled-components';
-
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    const pages = [];
-    let hoge = this.props.state.get("html").split("<hr>")
-    hoge.forEach((v,i)=>{
-      pages.push(
-        <section  className="sheet" key={"section"+i} >
-          <Header key={"Header"+i} page={`${parseInt(i)+1}/${hoge.length}`} />
-          <Body key={"Body"+i}>{v}</Body>
-          <Footer key={"Footer"+i}/>
-          <div className="A4-caution">{this.props.state.get("caution")}</div>
-        </section >
-      );
-    })
-    return (
-      <A4div>
-        {pages}
-      </A4div>
-    );
-  }
-}
-
-
-export default connect(
-  state => ({state}),
-  dispatch =>({ actions: bindActionCreators(actions, dispatch) })
-)(App)
-
-
 const A4div = styled.div`
 @page{
   size : A4;
@@ -57,6 +24,7 @@ const A4div = styled.div`
             box-sizing: border-box;
 }
 .sheet {
+  background: white;
   width: 210mm;
   height: 296mm;  /* 1mm余裕をもたせる */
   padding: 12.7mm;
@@ -98,7 +66,10 @@ const A4div = styled.div`
 }
 /* プレビュー用のスタイル */
 @media screen {
-  background: lightgray;
+  width:100%;
+  height:100%;
+  overflow-x : auto;
+  overflow-y : auto;
   .sheet {
     width: 210mm;
     height: 296mm;
@@ -109,3 +80,34 @@ const A4div = styled.div`
   }
 }
 `;
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    const pages = [];
+    let hoge = this.props.state.get("html").split("<hr>")
+    hoge.forEach((v,i)=>{
+      pages.push(
+        <section className="sheet" key={"section"+i} >
+          <Header key={"Header"+i} page={`${parseInt(i)+1}/${hoge.length}`} />
+          <Body key={"Body"+i}>{v}</Body>
+          <Footer key={"Footer"+i}/>
+          <div className="A4-caution">{this.props.state.get("caution")}</div>
+        </section >
+      );
+    })
+    return (
+      <A4div>
+        {pages}
+      </A4div>
+    );
+  }
+}
+
+
+export default connect(
+  state => ({state}),
+  dispatch =>({ actions: bindActionCreators(actions, dispatch) })
+)(App)
