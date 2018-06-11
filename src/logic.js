@@ -27,18 +27,6 @@ exports.printpdf = function(mainWindow) {
 }
 
 
-exports.clickViewMenu = function(mainWindow, item){
-  const menu = electron.Menu.getApplicationMenu();
-  menu.items["View"]
-  let result = menu.items.filter((i)=>{
-    return i.label == 'View';
-  })
-  result[0].submenu.items.forEach((i)=>{i.checked = false});
-  item.checked = true;
-  mainWindow.webContents.send("VIEW_CHANGE", item.label);
-}
-
-
 exports.savefileas = function(mainWindow){
   let dst = electron.dialog.showSaveDialog(null, {
     title: 'Save As',

@@ -7,6 +7,7 @@ import marked from 'marked';
 import hljs from 'highlight.js';
 import wfmap from 'wfmap';
 import Plotly from 'plotly.js';
+import * as jsdiff from 'diff';
 
 mermaid.mermaidAPI.initialize({
   startOnLoad: false,
