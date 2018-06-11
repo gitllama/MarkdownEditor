@@ -7,8 +7,8 @@ import Immutable from 'immutable'
 import styled from 'styled-components';
 
 const DIVS = styled.div`
-  overflow-x : auto;
-  overflow-y : auto;
+  /*overflow-x : auto;
+  overflow-y : auto;*/
   background: white;
   width: 100%;
   height: 100%;

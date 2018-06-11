@@ -33,7 +33,7 @@ class App extends React.Component {
           <img style={{"height":"10mm"}} src="../img/logo.svg"/>
           <div style={{"fontSize" : "1em"}}>{title}</div>
         </div>
-        <div >
+        <div>
           <pre>
             {"No.  : " + PadLeft(docNo,strlength)}<br/>
             {"Date : " + PadLeft(GetDateNow(),strlength)}<br/>

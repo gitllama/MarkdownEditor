@@ -16,7 +16,7 @@ const initialState = Immutable.Map({
 
   zoom : 1,
   size : 1,
-  page : 1
+  page : 0
 });
 
 const reducers = {

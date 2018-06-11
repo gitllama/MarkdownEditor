@@ -26,7 +26,7 @@ const A4div = styled.div`
 .sheet {
   background: white;
   width: 210mm;
-  height: 296mm;  /* 1mm余裕をもたせる */
+  height: 297mm;  /* 1mm余裕をもたせる */
   padding: 12.7mm;
   page-break-after: always;
   position : relative;
@@ -66,13 +66,9 @@ const A4div = styled.div`
 }
 /* プレビュー用のスタイル */
 @media screen {
-  width:100%;
-  height:100%;
-  overflow-x : auto;
-  overflow-y : auto;
   .sheet {
     width: 210mm;
-    height: 296mm;
+    height: 297mm;
     background: white; /* 背景を白く */
     box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);  /* ドロップシャドウ */
     margin: 5mm;

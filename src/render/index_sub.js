@@ -48,13 +48,18 @@ ipcRenderer.on("page-change", (event, param) =>{
 //   });
 // });
 //
-// ipcRenderer.on("page", (event, param) =>{
-//   store.dispatch({
-//     type  : "PAGE",
-//     payload : param
-//   });
-// });
 
+import styled from 'styled-components';
+const DIVS = styled.div`
+  height : 99%;
+  border: 1px solid #000000;
+  div{
+    -webkit-app-region: drag;
+  }
+`;
+const DIVS2 = styled.div`
+  -webkit-app-region: no-drag;
+`;
 ReactDOM.render(
   <Provider store={store}>
     <App />

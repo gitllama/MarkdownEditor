@@ -67,7 +67,7 @@ exports.createBrowserSubWindow = function(title, indexpath, config) {
       title: title,
       width: config["window"]["width"],
       height: config["window"]["height"],
-      //frame: false,
+      frame: false,
       //transparent: true
       //kiosk : config["kiosk"] || false //全画面で専用端末画面みたいにできる
     });

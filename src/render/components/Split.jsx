@@ -8,10 +8,14 @@ import SplitPane from 'react-split-pane';
 import Editor from './Editor.jsx'
 import Preview from './Preview.jsx'
 
-
+import styled from 'styled-components';
+const RIGHT = styled.div`
+  overflow-x : auto;
+  overflow-y : auto;
+`;
 
 const paneStyle = {
-  overflow:"hidden",
+  overflow:"auto",// overflow:"hidden",
   position: 'absolute',
   top: 0,
   right: 0,

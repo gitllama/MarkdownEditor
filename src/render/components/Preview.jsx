@@ -12,13 +12,14 @@ import Slide from './Slide/App.jsx'
 import styled from 'styled-components';
 const DIVS = styled.div`
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 1;
   width : 100%;
   height : 100%;
+  /* overflow-x : hide;
+  overflow-y : hide; */
 `;
+
+// width : calc(100% - 10px);
+// height : calc(100% - 10px);
 
 class App extends React.Component {
   constructor(props) {
