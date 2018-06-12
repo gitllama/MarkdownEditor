@@ -33,7 +33,12 @@ ipcRenderer.on("page-change", (event, param) =>{
     payload : param
   });
 });
-
+ipcRenderer.on("redraw", (event, param) =>{
+  store.dispatch({
+    type  : "REDRAW",
+    payload : param
+  });
+});
 // ipcRenderer.on("change-cursor", (event, param) =>{
 //   store.dispatch({
 //     type  : "CHANGE_CURSOR_ASYNCLATEST",
@@ -51,18 +56,21 @@ ipcRenderer.on("page-change", (event, param) =>{
 
 import styled from 'styled-components';
 const DIVS = styled.div`
-  height : 99%;
+  width : 100%
+  height : 10px;
   border: 1px solid #000000;
-  div{
-    -webkit-app-region: drag;
-  }
+  -webkit-app-region: drag;
 `;
 const DIVS2 = styled.div`
-  -webkit-app-region: no-drag;
+  width : 100%
+  border: 1px solid #000000;
 `;
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <div>
+      <DIVS/>
+      <App />
+    </div>
   </Provider>,
   document.getElementById('root')
 );

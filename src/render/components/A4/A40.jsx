@@ -16,15 +16,20 @@ const A4div = styled.div`
   size : A4;
 }
 /*ここに印刷用スタイル指定を書く*/
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+         -o-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+            box-sizing: border-box;
+}
 .sheet {
   background: white;
   width: 210mm;
-  height: 296mm;  /* 1mm余裕をもたせる */
+  height: 297mm;  /* 1mm余裕をもたせる */
   padding: 12.7mm;
-  position : relative;
-  border-width : 1px;
-  border-style : solid;
   page-break-after: always;
+  position : relative;
 }
 .A4-header{
   width : 100%;
@@ -34,9 +39,6 @@ const A4div = styled.div`
   justify-content : space-between;
 }
 .A4-body{
-  position : relative;
-  left : 0mm;
-  top : 20mm;
   width : 100%;
   height : 230mm;
   padding : 5mm;
@@ -63,61 +65,18 @@ const A4div = styled.div`
   font-weight : 900;
 }
 /* プレビュー用のスタイル */
-
-`;
-const A4section = styled.section`
-  page-break-after: always;
-  background: white;
-  width: 210mm;
-  height: 297mm;
-  position : relative;
-  @page{
-    size : A4;
-  }
-  @media screen {
+@media screen {
+  .sheet {
     width: 210mm;
     height: 297mm;
-    border-width : 1px;
-    border-style : solid;
     background: white; /* 背景を白く */
     box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);  /* ドロップシャドウ */
     margin: 5mm;
+    padding: 12.7mm;
   }
-  .A4-body{
-    position : absolute;
-    left : 12.7mm;
-    top : 30.7mm;
-    width : 174.6mm;
-    height : 225mm;
-    padding : 5mm;
-    border-width : 1px;
-    border-style : solid;
-  }
-  .A4-header{
-    position : absolute;
-    left : 12.7mm;
-    top : 12.7mm;
-    width : 174.6mm;
-    height: 18mm;
-    padding : 2mm;
-    display : flex;
-    justify-content : space-between;
-  }
-  .A4-footer{
-    position : absolute;
-    left : 12.7mm;
-    top : 266.3mm;
-    width : 174.6mm;
-    height: 18mm;
-    display : flex;
-    justify-content : space-between;
-  }
+}
 `;
 
-
-
-
-//           <Body key={"Body"+i}>{v}</Body>
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -127,17 +86,18 @@ class App extends React.Component {
     let hoge = this.props.state.get("html").split("<hr>")
     hoge.forEach((v,i)=>{
       pages.push(
-        <A4section key={"section"+i} >
+        <section className="sheet" key={"section"+i} >
           <Header key={"Header"+i} page={`${parseInt(i)+1}/${hoge.length}`} />
           <Body key={"Body"+i}>{v}</Body>
           <Footer key={"Footer"+i}/>
-        </A4section >
+          <div className="A4-caution">{this.props.state.get("caution")}</div>
+        </section >
       );
     })
     return (
-      <div>
+      <A4div>
         {pages}
-      </div>
+      </A4div>
     );
   }
 }

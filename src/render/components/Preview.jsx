@@ -11,13 +11,12 @@ import Slide from './Slide/App.jsx'
 
 import styled from 'styled-components';
 const DIVS = styled.div`
-  position: absolute;
   width : 100%;
   height : 100%;
   /* overflow-x : hide;
   overflow-y : hide; */
 `;
-
+// position: absolute; <-改ページできなくなる悪魔
 // width : calc(100% - 10px);
 // height : calc(100% - 10px);
 
@@ -41,18 +40,20 @@ class App extends React.Component {
     const viewselector =(i)=>{
       switch(i){
         case "Default":
-          return ( <Default /> );
+          return ( <Default/> );
         case "A4":
-          return ( <A4 /> );
+          return ( <A4/> );
         case "Slide":
-          return ( <Slide /> );
+          return ( <Slide  /> );
         default:
           return ( <div>ERR</div> );
       }
     }
     return (
-      <DIVS onWheel={(i) => this.onmousewheel(i)}>
+      <DIVS >
+        <div onWheel={(i) => this.onmousewheel(i)}>
         {viewselector(this.props.state.get("preview"))}
+        </div>
       </DIVS>
     );
   }

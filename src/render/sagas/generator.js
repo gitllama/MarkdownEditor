@@ -86,13 +86,15 @@ export function* savefileAsync(action) {
 }
 
 export function* markdownAsync(action) {
+  let src = action.payload ? action.payload : yield select(state => state.get("text"))
+
   let config = yield select(state => state.get("config"))
-  let dst = markedex.markdownCreate(action.payload, config["marked-ex"]);
+  let dst = markedex.markdownCreate(src, config["marked-ex"]);
 
   yield put(actions.reducerChange(
     (state)=> state.withMutations(m =>
       m.set('html', dst["value"])
-      .set('text', action.payload)
+      .set('text', src)
       .set('title', dst["header"]["title"])
       .set('docNo', dst["header"]["no"])
       .set('caution', dst["header"]["caution"])

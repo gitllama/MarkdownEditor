@@ -54,16 +54,21 @@ exports.createMenu = function() {
     {
       label: 'Edit',
       submenu: [
-        { role: 'undo' },
-        { role: 'redo' },
+        { role: 'undo' },             //Ctrl+Z
+        { role: 'redo' },             //Ctrl+Y
         { type: 'separator' },
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' },
-        { role: 'selectall' },
+        { role: 'cut' },              //Ctrl+X
+        { role: 'copy' },             //Ctrl+C
+        { role: 'paste' },            //Ctrl+V
+        { role: 'selectall' },        //Ctrl+A
         { type: 'separator' },
-        { role: 'togglefullscreen' },
-        { role: 'toggleDevTools' },
+        { role: 'togglefullscreen' }, //F11
+        {
+          label: 'Redraw',
+          accelerator: 'CmdOrCtrl+R',
+          click (i) { logic.redraw(); }
+        },
+        { role: 'toggleDevTools' },   //Shift+Ctrl+I
       ]
     },
     {
@@ -130,6 +135,7 @@ exports.createMenu = function() {
     },
   ]));
 }
+
 
 
 function clickViewMenu(item){

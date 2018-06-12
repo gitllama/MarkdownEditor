@@ -1,6 +1,7 @@
 const electron = require('electron');
 const path = require('path');
 const url = require('url');
+const logic = require('./logic.js');
 
 const configJson = require('../../config.json');
 let mainWindow;
@@ -80,6 +81,7 @@ exports.createBrowserSubWindow = function(title, indexpath, config) {
 
     subWindow.webContents.on('did-finish-load', function() {
       subWindow.webContents.send('INIT_ASYNCLATEST', config);
+      logic.redraw();
     });
 
     subWindow.on('closed', ()=>{

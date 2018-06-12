@@ -27,7 +27,6 @@ ipcRenderer.on("view-change", (event, param) =>{
     payload : param
   });
 });
-
 ipcRenderer.on("preview-change", (event, param) =>{
   store.dispatch({
     type  : "PREVIEW_CHANGE",
@@ -38,6 +37,12 @@ ipcRenderer.on("page-change", (event, param) =>{
   store.dispatch({
     type  : "PAGE_CHANGE",
     payload : param
+  });
+});
+ipcRenderer.on("redraw", (event, param) =>{
+  store.dispatch({
+    type  : "CHANGE_TEXT_ASYNCLATEST",
+    payload : null
   });
 });
 

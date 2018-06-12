@@ -10,6 +10,11 @@
 
 ## Page 1
 
+| key ||
+|:----|:--|
+| Alt+N | NextPage |
+| Alt+B | PreviousPage |
+
 ***
 
 ## Page 2

@@ -10,6 +10,7 @@ import * as g from './generator.js';
 const takeSagas = {
   ['INIT_ASYNCLATEST'] : g.init,
 
+
   ['VIEW_CHANGE'] : (state, action) => (
     state.withMutations(m => (
       m.set('view', action.payload)
