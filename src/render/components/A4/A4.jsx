@@ -11,60 +11,6 @@ import Footer from './Footer.jsx';
 import Body from './Body.jsx';
 
 import styled from 'styled-components';
-const A4div = styled.div`
-@page{
-  size : A4;
-}
-/*ここに印刷用スタイル指定を書く*/
-.sheet {
-  background: white;
-  width: 210mm;
-  height: 296mm;  /* 1mm余裕をもたせる */
-  padding: 12.7mm;
-  position : relative;
-  border-width : 1px;
-  border-style : solid;
-  page-break-after: always;
-}
-.A4-header{
-  width : 100%;
-  height: 18mm;
-  padding : 2mm;
-  display : flex;
-  justify-content : space-between;
-}
-.A4-body{
-  position : relative;
-  left : 0mm;
-  top : 20mm;
-  width : 100%;
-  height : 230mm;
-  padding : 5mm;
-  border-width : 1px;
-  border-style : solid;
-}
-.A4-footer{
-  width : 100%;
-  display : flex;
-  justify-content : space-between;
-  /*height : 14mm;*/
-  padding : 0mm 2mm 0mm;
-  /* position : relative; */
-}
-.A4-caution{
-  text-align : center;
-  position : absolute;
-  left : 10mm;
-  top : 130mm;
-  width : 190mm;
-  opacity : 0.3;
-  font-size : 8em;
-  transform : rotate(-35deg);
-  font-weight : 900;
-}
-/* プレビュー用のスタイル */
-
-`;
 const A4section = styled.section`
   page-break-after: always;
   background: white;
@@ -82,6 +28,12 @@ const A4section = styled.section`
     background: white; /* 背景を白く */
     box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);  /* ドロップシャドウ */
     margin: 5mm;
+  }
+  .orderwfmap{
+    justify-content : space-between;
+  }
+  .singlewfmap{
+    -webkit-transform: scale(0.5);
   }
   .A4-body{
     position : absolute;
@@ -115,9 +67,6 @@ const A4section = styled.section`
 `;
 
 
-
-
-//           <Body key={"Body"+i}>{v}</Body>
 class App extends React.Component {
   constructor(props) {
     super(props);

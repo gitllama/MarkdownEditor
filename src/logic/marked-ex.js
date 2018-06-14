@@ -47,7 +47,7 @@ function checkObject(obj, arr){
 }
 
 const highlightlanguage = {
-  ['mermaid'] : (code)=>{
+  ['mermaid'] : (code, lang)=>{
     let dst;
     mermaid.mermaidAPI.render(
       `mermaid-${Date.now()}`,
@@ -56,20 +56,32 @@ const highlightlanguage = {
     )
     return dst;
   },
-  ['wfmap'] : (code)=>{
+  ['wfmap'] : (code, lang)=>{
     let node = document.createElement("div")
     return wfmap.render(code, node).innerHTML
   },
-  ['plotly'] : (code)=>{
+  ['plotly'] : (code, lang)=>{
     let node = document.createElement("div");
     Plotly.newPlot(node, JSON.parse(code));
     return '\n</code></pre>'
             + node.outerHTML
             + '<pre><code class="language-plotly">'
   },
-  ['default'] : (code, lang)=>{
-    return hljs.getLanguage(lang) ? hljs.highlight(lang, code, true).value : code;
-  }
+  ['orderwfmap'] : (code, lang)=>{
+    let obj = JSON.parse(code);
+
+    let dst = ""
+    + '<div class="orderwfmap">'
+    + '<div class="singlewfmap">'
+    + wfmap.render({"mode" : obj["mode"],"data": obj["data"][0]}, document.createElement("div")).innerHTML
+    + '</div><div class="singlewfmap">'
+    + wfmap.render({"mode" : obj["mode"],"data": obj["data"][1]}, document.createElement("div")).innerHTML
+    + '</div><div class="singlewfmap">'
+    + wfmap.render({"mode" : obj["mode"],"data": obj["data"][2]}, document.createElement("div")).innerHTML
+    + "</div></div>"
+
+    return dst;
+  },
 };
 
 export function markdownCreate(code, config){
@@ -88,20 +100,13 @@ export function markdownCreate(code, config){
   let header = {};
   let highlight =(code, lang)=>{
     try {
-      switch(lang){
-        case '':
-          return;
-        case 'header':
-          header = JSON.parse(code) || {}
-          return "";
-        case 'mermaid':
-          return highlightlanguage['mermaid'](code);
-        case 'plotly':
-          return highlightlanguage['plotly'](code);
-        case 'wfmap':
-          return highlightlanguage['wfmap'](code);
-        default:
-          return highlightlanguage['default'](code, lang);
+      if (lang.toLowerCase() in highlightlanguage) {
+        return highlightlanguage[lang](code, lang.toLowerCase());
+      }else if(lang.toLowerCase() == 'header'){
+        header = JSON.parse(code) || {}
+        return "";
+      }else{
+        return hljs.getLanguage(lang) ? hljs.highlight(lang, code, true).value : code;
       }
     } catch(error) {
       //dst = code;
@@ -119,8 +124,9 @@ export function markdownCreate(code, config){
   ));
 
   mark = mark
-          .replace(/<pre><code class="language-header">\n<\/code><\/pre>/g, "" )
-          .replace(/<pre><code class="language-plotly">\n<\/code><\/pre>/g, "" );
+      .replace(/<pre><code class="language-header">\n<\/code><\/pre>/g, "" )
+      .replace(/<pre><code class="language-plotly">([\s\S]*?)<\/code><\/pre>/g, '$1' )
+      .replace(/<pre><code class="language-orderwfmap">([\s\S]*?)<\/code><\/pre>/g, '$1' );
 
   // console.log(mark)
 
