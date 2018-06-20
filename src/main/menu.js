@@ -1,7 +1,9 @@
 const electron = require('electron');
 const win = require('./windowManager.js');
 const app = electron.app;
-const logic = require('./logic.js');
+//const logic = require('./logic.js');
+import * as logic from './logic.js';
+
 
 exports.createMenu = function() {
   const Menu = electron.Menu;

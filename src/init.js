@@ -1,15 +1,9 @@
-require('babel-register');
-require('./init.js');
-
-/*
-
 const electron = require('electron');
 const app = electron.app;
 const ipcMain = electron.ipcMain;
 
 const path = require('path');
 const url = require('url');
-
 
 const win = require('./main/windowManager.js');
 const ipc = require('./main/ipc.js');
@@ -72,4 +66,3 @@ function createWindow () {
   ipc.createIPC();
 
 };
-*/

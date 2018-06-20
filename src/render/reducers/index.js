@@ -1,4 +1,5 @@
 import Immutable from 'immutable';
+import {previewDefault} from '../components/Preview.jsx';
 
 const initialState = Immutable.Map({
   busy : true,
@@ -8,7 +9,7 @@ const initialState = Immutable.Map({
   text : null,
   view : "Editor",
 
-  preview : "Default",
+  preview : previewDefault,
   title : "",
   docNo : "",
   caution : "DRAFT",
