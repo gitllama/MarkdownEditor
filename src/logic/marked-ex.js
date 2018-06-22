@@ -8,13 +8,8 @@ import hljs from 'highlight.js';
 import wfmap from 'wfmap';
 import Plotly from 'plotly.js';
 import * as jsdiff from 'diff';
-
-mermaid.mermaidAPI.initialize({
-  startOnLoad: false,
-  gantt: {
-    axisFormat: '%m-%d'
-  }
-});
+import * as igxl from './igxl.js';
+import deepAssign from 'deep-assign';
 
 var plotlylayout = {
   autosize: false,
@@ -47,7 +42,7 @@ function checkObject(obj, arr){
 }
 
 const highlightlanguage = {
-  ['mermaid'] : (code, lang)=>{
+  ['mermaid'] : (code, lang, data)=>{
     let dst;
     mermaid.mermaidAPI.render(
       `mermaid-${Date.now()}`,
@@ -56,18 +51,26 @@ const highlightlanguage = {
     )
     return dst;
   },
-  ['wfmap'] : (code, lang)=>{
+  ['wfmap'] : (code, lang, data)=>{
+    let obj = JSON.parse(code);
     let node = document.createElement("div")
-    return wfmap.render(code, node).innerHTML
+    let dst = code;
+    if(obj["mode"] == "memory"){
+      if(data != null){
+        dst = igxl.convert(data, obj["title"], obj["lot"], obj["wf"], obj["value"]);
+      }
+    }
+    //return wfmap.render(dst, node).innerHTML;
+    return `<div class="singlewfmap">${wfmap.render(dst, node).innerHTML}</div>`
   },
-  ['plotly'] : (code, lang)=>{
+  ['plotly'] : (code, lang, data)=>{
     let node = document.createElement("div");
     Plotly.newPlot(node, JSON.parse(code));
     return '\n</code></pre>'
             + node.outerHTML
             + '<pre><code class="language-plotly">'
   },
-  ['orderwfmap'] : (code, lang)=>{
+  ['orderwfmap'] : (code, lang, data)=>{
     let obj = JSON.parse(code);
 
     let dst = ""
@@ -84,24 +87,17 @@ const highlightlanguage = {
   },
 };
 
-export function markdownCreate(code, config){
+export function markdownCreate(code, config, data){
+
+  mermaid.mermaidAPI.initialize(checkObject(config, ["mermaid"]));
 
   let renderer = new marked.Renderer();
-  // renderer.heading =(text, level)=> {
-  //   var escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
-  //   return '<h' + level + '><a name="' +
-  //                 escapedText +
-  //                  '" class="anchor" href="#' +
-  //                  escapedText +
-  //                  '"><span class="header-link"></span></a>' +
-  //                   text + '</h' + level + '>';
-  // }
 
   let header = {};
   let highlight =(code, lang)=>{
     try {
       if (lang.toLowerCase() in highlightlanguage) {
-        return highlightlanguage[lang](code, lang.toLowerCase());
+        return highlightlanguage[lang](code, lang.toLowerCase(), data);
       }else if(lang.toLowerCase() == 'header'){
         header = JSON.parse(code) || {}
         return "";
@@ -109,6 +105,7 @@ export function markdownCreate(code, config){
         return hljs.getLanguage(lang) ? hljs.highlight(lang, code, true).value : code;
       }
     } catch(error) {
+      console.log(error)
       //dst = code;
     }
   };
@@ -128,7 +125,15 @@ export function markdownCreate(code, config){
       .replace(/<pre><code class="language-plotly">([\s\S]*?)<\/code><\/pre>/g, '$1' )
       .replace(/<pre><code class="language-orderwfmap">([\s\S]*?)<\/code><\/pre>/g, '$1' );
 
-  // console.log(mark)
-
   return { "value" : mark, "header" : header };
 }
+
+// renderer.heading =(text, level)=> {
+//   var escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
+//   return '<h' + level + '><a name="' +
+//                 escapedText +
+//                  '" class="anchor" href="#' +
+//                  escapedText +
+//                  '"><span class="header-link"></span></a>' +
+//                   text + '</h' + level + '>';
+// }

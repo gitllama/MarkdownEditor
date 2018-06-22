@@ -8,6 +8,7 @@ const {webFrame} = require('electron')
 import Default from './Default/App.jsx'
 import A4 from './A4/A4.jsx'
 import Slide from './Slide/App.jsx'
+import JSONTree from 'react-json-tree'
 
 import styled from 'styled-components';
 const DIVS = styled.div`
@@ -38,21 +39,18 @@ class App extends React.Component {
   }
   render() {
     const viewselector =(i)=>{
-      if(i in foo){
-        return ( foo[i] );
-      }else{
-        return ( <div>ERR</div> );
+      switch(i){
+        case "Default":
+          return ( <Default/> );
+        case "A4":
+          return ( <A4/> );
+        case "Slide":
+          return ( <Slide  /> );
+        case "Memory":
+          return ( <JSONTree data={this.props.state.get("memory")} /> );
+        default:
+          return ( <div>ERR</div> );
       }
-      // switch(i){
-      //   case "Default":
-      //     return ( <Default/> );
-      //   case "A4":
-      //     return ( <A4/> );
-      //   case "Slide":
-      //     return ( <Slide  /> );
-      //   default:
-      //     return ( <div>ERR</div> );
-      // }
     }
     return (
       <DIVS >
@@ -63,14 +61,6 @@ class App extends React.Component {
     );
   }
 }
-
-const foo = ({
-  "Default" : <Default/>,
-  "A4" : <A4/>,
-  "Slide" : <Slide/>
-});
-export const previewDefault = "Default";
-export const getPreviewKeys = Object.keys(foo)
 
 export default connect(
   state => ({state}),

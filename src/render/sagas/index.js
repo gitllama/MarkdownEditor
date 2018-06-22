@@ -32,8 +32,9 @@ const takeSagas = {
   ['READFILE_ASYNCLATEST'] : g.readfileAsync,
   ['SAVEFILE_ASYNCLATEST'] : g.savefileAsync,
 
-  // ['SELECT_LEGEND_ASYNCLATEST'] : g.selectlegendAsync,
-  //
+  ['READDATALOG_ASYNCLATEST'] : g.readToMemoryAsync,
+
+
   // ['READSQL_ASYNCLATEST'] : g.sqlAsync,
   // ['READLOG_ASYNCLATEST'] : g.readlogAsync,
   // ['READTEST_ASYNCLATEST'] : g.readtestAsync,

@@ -1,9 +1,7 @@
 const electron = require('electron');
 const win = require('./windowManager.js');
 const app = electron.app;
-//const logic = require('./logic.js');
-import * as logic from './logic.js';
-
+const logic = require('./logic.js');
 
 exports.createMenu = function() {
   const Menu = electron.Menu;
@@ -50,6 +48,26 @@ exports.createMenu = function() {
           label: 'Exit',
           accelerator: 'CmdOrCtrl+Q',
           click () { app.quit(); }
+        }
+      ]
+    },
+    {
+      label: 'Memory',
+      submenu: [
+        {
+          label: 'IGXL_DatalogOpen',
+          click () {
+            let dst = electron.dialog.showOpenDialog(null, {
+                properties: ['openFile', 'multiSelections'],
+                title: 'Select a txt file',
+                defaultPath: '.',
+                filters: [
+                    {name: 'txt file', extensions: ['txt']}
+                ]
+            });
+            if(dst)
+              win.mainWindow().webContents.send("READDATALOG_ASYNCLATEST", dst);
+          }
         }
       ]
     },
@@ -118,6 +136,12 @@ exports.createMenu = function() {
         },
         {
           label: 'Slide',
+          type: 'checkbox',
+          checked: false,
+          click (i) { clickPreviewMenu(i); }
+        },
+        {
+          label: 'Memory',
           type: 'checkbox',
           checked: false,
           click (i) { clickPreviewMenu(i); }

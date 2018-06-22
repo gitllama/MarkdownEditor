@@ -1,5 +1,4 @@
 import Immutable from 'immutable';
-import {previewDefault} from '../components/Preview.jsx';
 
 const initialState = Immutable.Map({
   busy : true,
@@ -9,7 +8,7 @@ const initialState = Immutable.Map({
   text : null,
   view : "Editor",
 
-  preview : previewDefault,
+  preview : "Default",
   title : "",
   docNo : "",
   caution : "DRAFT",
@@ -17,7 +16,9 @@ const initialState = Immutable.Map({
 
   zoom : 1,
   size : 1,
-  page : 0
+  page : 0,
+
+  datalog : null
 });
 
 const reducers = {
