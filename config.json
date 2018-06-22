@@ -20,6 +20,9 @@
       "gantt": {
         "axisFormat": "%m-%d"
       }
+    },
+    "wfmap":{
+      "size": 0.5
     }
   }
 }
