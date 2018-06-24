@@ -142,7 +142,7 @@ Create diagrams in markdown using WfMap.js code blocks:
 
 ```wfmap
 {
-  "mode" : "legend",
+  "data" : "legend",
   "legend" : {
     "note" : ["Notch : Right"],
     "mode" : "mark",
@@ -230,8 +230,6 @@ Create diagrams in markdown using WfMap.js code blocks:
 }
 ```
 
-***
-
 ```wfmap
 {
   "config" : {
@@ -278,6 +276,8 @@ Create diagrams in markdown using WfMap.js code blocks:
 }
 ```
 
+***
+
 When "config" and "legend" are omitted, the previous one will be referenced.
 
 ```wfmap
@@ -304,6 +304,56 @@ When "config" and "legend" are omitted, the previous one will be referenced.
     {"y" : 4, "x": 5, "value": 39}
     ]
   }
+}
+```
+
+If "data" is an array, you can draw side by side drawing.
+
+```wfmap
+{
+  "data":[{
+    "title" : "Wf02",
+    "caution" : "DRAFT",
+    "chip": [
+    {"y" : 1, "x": 3, "value": 22},
+    {"y" : 1, "x": 4, "value": 23},
+    {"y" : 1, "x": 5, "value": 10},
+    {"y" : 2, "x": 2, "value": 43},
+    {"y" : 2, "x": 3, "value": 41},
+    {"y" : 2, "x": 4, "value": 24},
+    {"y" : 2, "x": 5, "value": 21},
+    {"y" : 2, "x": 6, "value": 5},
+    {"y" : 3, "x": 2, "value": 6},
+    {"y" : 3, "x": 3, "value": 20},
+    {"y" : 3, "x": 4, "value": 25},
+    {"y" : 3, "x": 5, "value": 40},
+    {"y" : 3, "x": 6, "value": 44},
+    {"y" : 4, "x": 7, "value": 54},
+    {"y" : 4, "x": 6, "value": 45},
+    {"y" : 4, "x": 5, "value": 39}
+    ]
+  },{
+    "title" : "Wf02",
+    "caution" : "DRAFT",
+    "chip": [
+    {"y" : 1, "x": 3, "value": 22},
+    {"y" : 1, "x": 4, "value": 23},
+    {"y" : 1, "x": 5, "value": 10},
+    {"y" : 2, "x": 2, "value": 43},
+    {"y" : 2, "x": 3, "value": 41},
+    {"y" : 2, "x": 4, "value": 24},
+    {"y" : 2, "x": 5, "value": 21},
+    {"y" : 2, "x": 6, "value": 5},
+    {"y" : 3, "x": 2, "value": 6},
+    {"y" : 3, "x": 3, "value": 20},
+    {"y" : 3, "x": 4, "value": 25},
+    {"y" : 3, "x": 5, "value": 40},
+    {"y" : 3, "x": 6, "value": 44},
+    {"y" : 4, "x": 7, "value": 54},
+    {"y" : 4, "x": 6, "value": 45},
+    {"y" : 4, "x": 5, "value": 39}
+    ]
+  }]
 }
 ```
 

@@ -80,15 +80,7 @@ exports.createMenu = function() {
         { role: 'cut' },              //Ctrl+X
         { role: 'copy' },             //Ctrl+C
         { role: 'paste' },            //Ctrl+V
-        { role: 'selectall' },        //Ctrl+A
-        { type: 'separator' },
-        { role: 'togglefullscreen' }, //F11
-        {
-          label: 'Redraw',
-          accelerator: 'CmdOrCtrl+R',
-          click (i) { logic.redraw(); }
-        },
-        { role: 'toggleDevTools' },   //Shift+Ctrl+I
+        { role: 'selectall' }         //Ctrl+A
       ]
     },
     {
@@ -116,7 +108,8 @@ exports.createMenu = function() {
         {
           label: 'Open SubWindow',
           click () { win.createBrowserSubWindow("Preview", '../render/index_sub.html', win.getConfig()); }
-        }
+        },
+        { role: 'toggleDevTools' }   //Shift+Ctrl+I
       ]
     },
     {
@@ -156,6 +149,13 @@ exports.createMenu = function() {
           label: 'Back',
           accelerator: 'Alt+B',
           click (i) { win.sendAll('page-change', -1); }
+        },
+        { type: 'separator' },
+        { role: 'togglefullscreen' }, //F11
+        {
+          label: 'Redraw',
+          accelerator: 'CmdOrCtrl+R',
+          click (i) { logic.redraw(); }
         }
       ]
     },

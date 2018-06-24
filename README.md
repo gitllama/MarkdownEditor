@@ -20,12 +20,11 @@
   - copy
   - paste
   - selectall
-  - togglefullscreen
-  - toggleDevTools
 - View
   - Editor
   - Split
   - Preview
+  - togglefullscreen
   - Open SubWindow
 - Preview
   - Redraw
@@ -35,6 +34,7 @@
   - Slide
   - Next
   - Back
+  - toggleDevTools
 
 
 ## Future

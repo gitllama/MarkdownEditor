@@ -46,7 +46,7 @@
     "redux-actions": "^2.3.2",
     "redux-saga": "^0.16.0",
     "styled-components": "^3.3.2",
-    "wfmap": "github:gitllama/wfmap"
+    "wfmap": "github:gitllama/wfmap#v0.0.1"
   },
   "devDependencies": {
     "electron": "^2.0.0",

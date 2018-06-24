@@ -41,6 +41,7 @@ function checkObject(obj, arr){
   return obj[arr[0]];
 }
 
+
 const highlightlanguage = {
   ['mermaid'] : (code, lang, data)=>{
     let dst;
@@ -53,45 +54,53 @@ const highlightlanguage = {
   },
   ['wfmap'] : (code, lang, data)=>{
     let obj = JSON.parse(code);
-    let node = document.createElement("div")
-    let dst = code;
-    if(obj["mode"] == "memory"){
-      if(data != null){
-        dst = igxl.convert(data, obj["title"], obj["lot"], obj["wf"], obj["value"]);
+    let dst = "";//'<div class="orderwfmap">';
+    let wfArry = Array.isArray(obj["data"]) ? obj["data"] : [obj["data"]]
+    wfArry.forEach((wf)=>{
+      let sglwf = deepAssign({}, obj)
+      if(obj["mode"] == "memory" && data != null){
+        sglwf["data"] = igxl.convert(data, wf["lot"], wf["wf"], wf["value"]);
+      }else{
+        sglwf["data"] = wf
       }
-    }
-    //return wfmap.render(dst, node).innerHTML;
-    return `<div class="singlewfmap">${wfmap.render(dst, node).innerHTML}</div>`
+      let node = document.createElement("div")
+      //dst = dst + `<div class="singlewfmap">${wfmap.render(sglwf, node).innerHTML}</div>`
+      dst = dst + `${wfmap.render(sglwf, node).innerHTML}`
+    });
+    return dst + '</div>';
   },
   ['plotly'] : (code, lang, data)=>{
     let node = document.createElement("div");
     Plotly.newPlot(node, JSON.parse(code));
     return '\n</code></pre>'
-            + node.outerHTML
-            + '<pre><code class="language-plotly">'
-  },
-  ['orderwfmap'] : (code, lang, data)=>{
-    let obj = JSON.parse(code);
-
-    let dst = ""
-    + '<div class="orderwfmap">'
-    + '<div class="singlewfmap">'
-    + wfmap.render({"mode" : obj["mode"],"data": obj["data"][0]}, document.createElement("div")).innerHTML
-    + '</div><div class="singlewfmap">'
-    + wfmap.render({"mode" : obj["mode"],"data": obj["data"][1]}, document.createElement("div")).innerHTML
-    + '</div><div class="singlewfmap">'
-    + wfmap.render({"mode" : obj["mode"],"data": obj["data"][2]}, document.createElement("div")).innerHTML
-    + "</div></div>"
-
-    return dst;
-  },
+    + node.outerHTML
+    + '<pre><code class="language-plotly">'
+  }
 };
 
-export function markdownCreate(code, config, data){
+function initMermaid(obj){
+  mermaid.mermaidAPI.initialize(checkObject(obj, ["mermaid"]));
+}
 
-  mermaid.mermaidAPI.initialize(checkObject(config, ["mermaid"]));
+function initMermaid(obj){
+  mermaid.mermaidAPI.initialize(checkObject(obj, ["mermaid"]));
+}
 
+function initRender(){
   let renderer = new marked.Renderer();
+  // renderer.heading =(text, level)=> {
+  //   var escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
+  //   return '<h' + level + '><a name="' +
+  //                 escapedText +
+  //                  '" class="anchor" href="#' +
+  //                  escapedText +
+  //                  '"><span class="header-link"></span></a>' +
+  //                   text + '</h' + level + '>';
+  // }
+  return renderer;
+}
+
+function markedEx(code, config, data){
 
   let header = {};
   let highlight =(code, lang)=>{
@@ -106,14 +115,13 @@ export function markdownCreate(code, config, data){
       }
     } catch(error) {
       console.log(error)
-      //dst = code;
     }
   };
 
   marked.setOptions({ langPrefix : ''});
   let mark = marked(code, Object.assign(
     {
-      renderer: renderer,
+      renderer: initRender(),
       highlight: highlight,
       langPrefix: 'language-'
     },
@@ -123,17 +131,17 @@ export function markdownCreate(code, config, data){
   mark = mark
       .replace(/<pre><code class="language-header">\n<\/code><\/pre>/g, "" )
       .replace(/<pre><code class="language-plotly">([\s\S]*?)<\/code><\/pre>/g, '$1' )
-      .replace(/<pre><code class="language-orderwfmap">([\s\S]*?)<\/code><\/pre>/g, '$1' );
+      .replace(/<pre><code class="language-wfmap">([\s\S]*?)<\/code><\/pre>/g, `<div>$1</div>` );
 
-  return { "value" : mark, "header" : header };
+  return { "value" : mark, "header" : header }
 }
 
-// renderer.heading =(text, level)=> {
-//   var escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
-//   return '<h' + level + '><a name="' +
-//                 escapedText +
-//                  '" class="anchor" href="#' +
-//                  escapedText +
-//                  '"><span class="header-link"></span></a>' +
-//                   text + '</h' + level + '>';
-// }
+
+
+export function markdownCreate(code, config, data){
+
+  initMermaid(config);
+  let mark = markedEx(code, config, data);
+
+  return mark;
+}

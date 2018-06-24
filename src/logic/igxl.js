@@ -157,17 +157,12 @@ function unitParseFloat(val){
   return parseFloat(hoge);
 }
 
-exports.convert = function(src, title, lot, wf, valArry){
-  let dst = {
-    "data" : {
-      "title" : title || `${lot} ${wf} ${valArry[0]}`,
-      "chip" : []
-    }
-  }
+exports.convert = function(src, lot, wf, valArry){
+  let dst = []
   let hoge = checkObject(src, [lot, wf])
   if(hoge != null){
     Object.keys(hoge).forEach((i)=>{
-      dst["data"]["chip"].push({
+      dst.push({
         "x" : hoge[i]["y"],
         "y" : 11 - hoge[i]["x"],
         "value" : checkObject(hoge[i], valArry)
