@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron . -D",
-    "pkg": ".\\node_modules\\.bin\\electron-packager . MarkdownEditor --platform=win32 --arch=all --electron-version=2.0.1"
+    "pkg": ".\\node_modules\\.bin\\electron-packager . MarkdownEditor --platform=win32 --arch=all --electron-version=2.0.1 --overwrite --asar" 
   },
   "repository": "",
   "keywords": [],
