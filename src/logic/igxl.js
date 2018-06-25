@@ -77,7 +77,8 @@ exports.getMeasured = function(txt){
     + "------------------------------------[\\s]*"
     + "([\\s\\d]{6})([\\s\\d]{10})([\\s\\d]{9})$"
   , 'gm');
-  const rResult = /^ ([\s\d]{11})([\s\d]{6})(.{9})(.{26})(.{15})([\s\d]{10})(.{15})(.{15})(.{15})(.{15})/mg;
+  //const rResult = /^ ([\s\d]{11})([\s\d]{6})(.{9})(.{26})(.{15})([\s\d]{10})(.{15})(.{15})(.{15})(.{15})/mg;
+  const rResult = /^ ([\s\d]{11})([\s\d]{6})(.{9})(.*)(.{15})(.{15})(.{15})(.{15})(.{10})/mg;
 
   try {
     let matchdevice;
@@ -115,16 +116,17 @@ exports.getMeasured = function(txt){
         let number = parseInt(matchtest[1]);
         let site = matchtest[2];
         let result = matchtest[3].trim();
-        let testName = matchtest[4].trim();
-        let pin = matchtest[5].trim();
-        let channel = matchtest[6].trim();
-        let low = matchtest[7].trim();
-        let measured = matchtest[8].trim();
-        let high = matchtest[9].trim();
-        let force = matchtest[10].trim();
 
+        let testName = matchtest[4].split(/\s+/);
+        // let pin = arry[2].trim();
+        // let channel = arry[6].trim();
+        let low = matchtest[5].trim();
+        let measured = matchtest[6].trim();
+        let high = matchtest[7].trim();
+        let force = matchtest[8].trim();
+        let loc = matchtest[9].trim();
 
-        dst[lot][wf][chipno][`${testName} ${pin}`] = {
+        dst[lot][wf][chipno][`${testName[0].trim()} ${testName[1].trim()}`] = {
           "result" : result,
           "measured" : measured,
           "value" : unitParseFloat(measured)
@@ -144,9 +146,14 @@ function unitParseFloat(val){
     "n" : "E-9",
     "u" : "E-6",
     "m" : "E-3",
+    "k" : "E+3",
     "K" : "E+3",
+    "M" : "E+6",
+    "G" : "E+9",
     "V" : "",
-    "A" : ""
+    "A" : "",
+    "hz" : "",
+    "LSB" : ""
   }
   if(val == null) return null;
   let hoge = val;

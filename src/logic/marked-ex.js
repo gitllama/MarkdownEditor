@@ -58,8 +58,9 @@ const highlightlanguage = {
     let wfArry = Array.isArray(obj["data"]) ? obj["data"] : [obj["data"]]
     wfArry.forEach((wf)=>{
       let sglwf = deepAssign({}, obj)
-      if(obj["mode"] == "memory" && data != null){
-        sglwf["data"] = igxl.convert(data, wf["lot"], wf["wf"], wf["value"]);
+      if(wf["mode"] == "memory" && data != null){
+        sglwf["data"] = wf;
+        sglwf["data"]["chip"] = igxl.convert(data, wf["lot"], wf["wf"], wf["value"]);
       }else{
         sglwf["data"] = wf
       }
