@@ -44,3 +44,4 @@
 - wfmapのstringのand処理
 - memoryの自動入れ替え・選択
 - fileの直接参照
+- bin検索時の正規表現

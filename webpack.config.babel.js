@@ -16,7 +16,7 @@ export default (env) => {
       path: PROD ? `${__dirname}/dist` : `${__dirname}/dist/src`,
       filename: MAIN ? 'main/main.js' : 'render/index.js',
       library: "dist",
-      libraryTarget: 'umd',
+      libraryTarget: 'commonjs2',
       globalObject  : 'this'
     },
     devtool: PROD ? '' : 'source-map',
