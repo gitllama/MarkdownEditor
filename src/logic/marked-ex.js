@@ -6,7 +6,7 @@ import fs from 'fs';
 import marked from 'marked';
 import hljs from 'highlight.js';
 import wfmap from 'wfmap';
-import Plotly from 'plotly.js';
+//import Plotly from 'plotly.js';
 import * as jsdiff from 'diff';
 import * as igxl from './igxl.js';
 import deepAssign from 'deep-assign';
@@ -71,11 +71,11 @@ const highlightlanguage = {
     return dst + '</div>';
   },
   ['plotly'] : (code, lang, data)=>{
-    let node = document.createElement("div");
-    Plotly.newPlot(node, JSON.parse(code));
-    return '\n</code></pre>'
-    + node.outerHTML
-    + '<pre><code class="language-plotly">'
+    // let node = document.createElement("div");
+    // Plotly.newPlot(node, JSON.parse(code));
+    // return '\n</code></pre>'
+    // + node.outerHTML
+    // + '<pre><code class="language-plotly">'
   }
 };
 
@@ -83,9 +83,6 @@ function initMermaid(obj){
   mermaid.mermaidAPI.initialize(checkObject(obj, ["mermaid"]));
 }
 
-function initMermaid(obj){
-  mermaid.mermaidAPI.initialize(checkObject(obj, ["mermaid"]));
-}
 
 function initRender(){
   let renderer = new marked.Renderer();

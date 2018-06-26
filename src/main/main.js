@@ -1,10 +1,7 @@
-const electron = require('electron');
-const app = electron.app;
-const ipcMain = electron.ipcMain;
+const {app, ipcMain} = require('electron');
 
 const path = require('path');
 const url = require('url');
-
 
 const win = require('./windowManager.js');
 const ipc = require('./ipc.js');

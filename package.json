@@ -2,10 +2,13 @@
   "name": "MarkdownEditor",
   "version": "0.0.1",
   "description": "",
-  "main": "src/main.js",
+  "main": "dist/main.js",
   "scripts": {
     "start": "electron . -D",
-    "pkg": ".\\node_modules\\.bin\\electron-packager . MarkdownEditor --platform=win32 --arch=all --electron-version=2.0.1 --overwrite --asar" 
+    "build-main": "webpack --env.prod --env.main",
+    "build-render": "webpack --env.prod",
+    "pkg": ".\\node_modules\\.bin\\electron-packager . MarkdownEditor --platform=win32 --arch=all --electron-version=2.0.1 --ignore=\"^/src\" --overwrite",
+    "pkg-asar": ".\\node_modules\\.bin\\electron-packager . MarkdownEditor --platform=win32 --arch=all --electron-version=2.0.1 --prune --overwrite --asar"
   },
   "repository": "",
   "keywords": [],
@@ -24,7 +27,9 @@
       "react"
     ]
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
@@ -35,7 +40,6 @@
     "jsbarcode": "^3.9.0",
     "marked": "^0.3.19",
     "mermaid": "^8.0.0-rc.8",
-    "plotly.js": "^1.38.2",
     "react": "^16.3.2",
     "react-ace": "^6.1.1",
     "react-dom": "^16.3.2",
@@ -46,10 +50,10 @@
     "redux-actions": "^2.3.2",
     "redux-saga": "^0.16.0",
     "styled-components": "^3.3.2",
-    "wfmap": "github:gitllama/wfmap#v0.0.1"
-  },
-  "devDependencies": {
+    "wfmap": "github:gitllama/wfmap#v0.0.1",
     "electron": "^2.0.0",
-    "electron-packager": "^12.1.0"
+    "electron-packager": "^12.1.0",
+    "webpack": "^4.12.1",
+    "webpack-cli": "^2.0.11"
   }
 }

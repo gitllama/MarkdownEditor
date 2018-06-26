@@ -2,8 +2,12 @@ const electron = require('electron');
 const path = require('path');
 const url = require('url');
 const logic = require('./logic.js');
+const fs = require('fs');
 
-const configJson = require('../../config.json');
+// const configJson = require('../../config.json');
+const configJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../config.json')));
+
+
 let mainWindow;
 let subWindow;
 
