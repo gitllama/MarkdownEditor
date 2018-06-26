@@ -1,0 +1,28 @@
+{
+  "window" : {
+    "width" : 800,
+    "height" : 200,
+    "devTool" : true
+  },
+  "shortcut" : {
+    "global" : {
+    },
+    "main" : {
+    }
+  },
+  "marked-ex":{
+    "marked":{
+      "gfm": true,
+      "tables": true,
+      "breaks": true
+    },
+    "mermaid":{
+      "gantt": {
+        "axisFormat": "%m-%d"
+      }
+    },
+    "wfmap":{
+      "size": 0.5
+    }
+  }
+}
