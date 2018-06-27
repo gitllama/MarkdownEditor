@@ -178,3 +178,19 @@ export function* syncHTMLAsync(action) {
       )));
 
 }
+
+// http://asciidoctor.github.io/asciidoctor.js/master/
+
+// var asciidoctor = Asciidoctor()
+// asciidoctor.Extensions.register(function () {
+//   this.treeProcessor(function () {
+//     var self = this
+//     self.process(function (doc) {
+//       var blocks = doc.getBlocks()
+//       for(var i=0;i<blocks.length;i++){
+//         blocks[i].id('id', 'p'+i)
+//       }
+//       return doc
+//     })
+//   })
+// })
