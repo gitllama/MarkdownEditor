@@ -6,6 +6,7 @@ import fs from 'fs';
 import * as markedex from '../../logic/marked-ex.js';
 import * as igxl from '../../logic/igxl.js';
 import deepAssign from 'deep-assign';
+import Asciidoctor from 'asciidoctor.js';
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -74,12 +75,17 @@ export function* readfileAsync(action) {
 
   let hoge = fs.readFileSync(action.payload).toString()
 
+  yield put(actions.reducerChange(
+    (state)=> state.withMutations(m =>
+      m.set('filename', action.payload)
+    )
+  ));
+
   yield markdownAsync({payload : hoge})
 
   yield put(actions.reducerChange(
     (state)=> state.withMutations(m =>
       m.set('busy', false)
-      .set('filename', action.payload)
     )
   ));
 
@@ -112,10 +118,41 @@ export function* savefileAsync(action) {
 
 export function* markdownAsync(action) {
   let src = action.payload ? action.payload : yield select(state => state.get("text"))
+  let file = yield select(state => state.get("filename"));
+  file = file != null ? file.split('.').pop() : null;
 
   let config = yield select(state => state.get("config"))
   let data = yield select(state => state.get("memory"))
-  let dst = markedex.markdownCreate(src, config["marked-ex"], data);
+
+  let dst;
+  if(file == "adoc"){
+    let asciidoctor = Asciidoctor();
+    asciidoctor.Extensions.register(function (){
+      this.block(function (){
+        const self = this;
+        self.named('shout'); //[named]
+        self.onContext('literalblock');//div class name
+        self.process(function (parent, reader){
+          const lines = reader.getLines().map((l)=>{
+            return l.toUpperCase();
+          });
+          console.log(reader.getString())
+          return self.createBlock(parent, 'literalblock', lines);
+        });
+      });
+    });
+    dst = ({
+      "header" : {
+        "title" : null,
+        "no" : null,
+        "caution" : null
+      },
+      "value" : asciidoctor.convert(src)
+    })
+  }else{
+    dst = markedex.markdownCreate(src, config["marked-ex"], data);
+  }
+
 
   yield put(actions.reducerChange(
     (state)=> state.withMutations(m =>

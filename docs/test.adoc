@@ -1,0 +1,80 @@
+= Document Title (Level 0)
+
+== Level 1 Section Title
+
+=== Level 2 Section Title
+
+==== Level 3 Section Title
+
+===== Level 4 Section Title
+
+line1 +
+line2
+
+*bold*
+[red]#赤色#
+[underline]#下線#
+[line-through]#取り消し線#
+
+* level 1
+** level 2
+*** level 3
+**** level 4
+***** level 5
+* level 1
+
+. Step 1
+. Step 2
+.. Step 2a
+.. Step 2b
+. Step 3
+
+CPU:: コンピューターの中心的な処理装置
+RAM:: 読み書き可能な主記憶装置
+SSD:: フラッシュメモリを使用した補助記憶装置
+キーボード:: キーを押すことで信号を送信する入力装置
+マウス:: コンピューターのポインティングデバイス
+モニター:: 映像を表示する出力装置
+
+[source, rust]
+----
+fn main() {
+    println!("Hello World!");
+}
+----
+
+<<<
+
+.テーブルタイトル
+[options="header"]
+|=======================
+|Col 1|Col 2      |Col 3
+|1    |Item 1     |a
+|2    |Item 2     |b
+|3    |Item 3     |c
+|=======================
+
+[source,ruby]
+----
+require 'optparse'
+opt = OptionParser.new
+
+opt.on('-a') {|v| p v }
+opt.on('-b') {|v| p v }
+
+opt.parse!(ARGV)
+p ARGV
+
+ruby sample.rb -a foo bar -b baz
+# => true
+     true
+     ["foo", "bar", "baz"]
+----
+
+[mermaid]
+....
+graph LR;
+    AsciiDocテキスト -- asciidocotor-pdf --> PDF仕様書;
+    PlantUMLテキスト -- PlantUML --> png画像;
+    png画像 -- asciidoctor-pdf --> PDF仕様書;
+....

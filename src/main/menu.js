@@ -19,7 +19,7 @@ exports.createMenu = function() {
                 title: 'Select a Markdown file',
                 defaultPath: '.',
                 filters: [
-                    {name: 'markdown file', extensions: ['md']}
+                    {name: 'markdown file', extensions: ['md','adoc']}
                 ]
             });
             if(dst)

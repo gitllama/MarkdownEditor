@@ -2,7 +2,7 @@
   "name": "MarkdownEditor",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/main.js",
+  "main": "src/main.js",
   "scripts": {
     "start": "electron . -D",
     "build-main": "webpack --env.prod --env.main",
@@ -27,7 +27,9 @@
       "react"
     ]
   },
-  "dependencies": {},
+  "dependencies": {
+    "asciidoctor.js": "^1.5.7-beta.1"
+  },
   "devDependencies": {
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
