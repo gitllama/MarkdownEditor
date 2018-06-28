@@ -44,7 +44,7 @@ function checkObject(obj, arr){
 
 
 const highlightlanguage = {
-  ['mermaid'] : (code, lang, data)=>{
+  ['mermaid'] : (code, data)=>{
     let dst;
     mermaid.mermaidAPI.render(
       `mermaid-${Date.now()}`,
@@ -53,7 +53,7 @@ const highlightlanguage = {
     )
     return dst;
   },
-  ['wfmap'] : (code, lang, data)=>{
+  ['wfmap'] : (code, data)=>{
     let obj = JSON.parse(code);
     let dst = "";//'<div class="orderwfmap">';
     let wfArry = Array.isArray(obj["data"]) ? obj["data"] : [obj["data"]]
@@ -71,7 +71,7 @@ const highlightlanguage = {
     });
     return dst + '</div>';
   },
-  ['plotly'] : (code, lang, data)=>{
+  ['plotly'] : (code, data)=>{
     // let node = document.createElement("div");
     // Plotly.newPlot(node, JSON.parse(code));
     // return '\n</code></pre>'
@@ -83,7 +83,6 @@ const highlightlanguage = {
 function initMermaid(obj){
   mermaid.mermaidAPI.initialize(checkObject(obj, ["mermaid"]));
 }
-
 
 function initRender(){
   let renderer = new marked.Renderer();
@@ -99,13 +98,14 @@ function initRender(){
   return renderer;
 }
 
+
 function markedEx(code, config, data){
 
   let header = {};
   let highlight =(code, lang)=>{
     try {
       if (lang.toLowerCase() in highlightlanguage) {
-        return highlightlanguage[lang](code, lang.toLowerCase(), data);
+        return highlightlanguage[lang](code, data);
       }else if(lang.toLowerCase() == 'header'){
         header = JSON.parse(code) || {}
         return "";
@@ -136,58 +136,48 @@ function markedEx(code, config, data){
 }
 
 function asciidoctorEx(code, config, data){
+
+  let header = {};
   let asciidoctor = Asciidoctor();
-
-  asciidoctor.Extensions.register(function (){
-    this.block(function (){
-      const self = this;
-      self.named('shout'); //[named]
-      self.onContext('paragraph');//div class name
-      self.process(function (parent, reader){
-        const lines = reader.getLines().map((l)=>{
-          return l.toUpperCase();
-        });
-        return self.createBlock(parent, 'paragraph', lines);
-      });
-    });
-  });
-
-  asciidoctor.Extensions.register(function (){
-    this.block(function (){
-      const self = this;
-      self.named('mermaid');
-      self.onContext('literal');
-      self.process(function (parent, reader){
-        let mermaidcode = reader.getString()
-        let dst;
-        mermaid.mermaidAPI.render(
-          `mermaid-${Date.now()}`,
-          mermaidcode,
-          (svgCode)=>( dst = svgCode )
-        )
-        return self.createBlock(parent, 'pass', dst);
-      });
-    });
-  });
-
   // asciidoctor.Extensions.register(function (){
   //   this.block(function (){
   //     const self = this;
-  //     self.named('mermaid');
-  //     self.onContext('literal');
+  //     self.named('shout'); //[named]
+  //     self.onContext('paragraph');//div class name
   //     self.process(function (parent, reader){
-  //       let mermaidcode = reader.getString()
-  //       return self.createBlock(parent, 'pass', highlightlanguage["wfmap"]());
+  //       const lines = reader.getLines().map((l)=>{
+  //         return l.toUpperCase();
+  //       });
+  //       return self.createBlock(parent, 'paragraph', lines);
   //     });
   //   });
   // });
+  Object.keys(highlightlanguage).forEach((key)=>{
+    asciidoctor.Extensions.register(function (){
+      this.block(function (){
+        const self = this;
+        self.named(key);
+        self.onContext('literal');
+        self.process(function (parent, reader){
+          let dst = highlightlanguage[key](reader.getString(), data)
+          return self.createBlock(parent, 'pass', dst);
+        });
+      });
+    });
+  });
+  asciidoctor.Extensions.register(function (){
+    this.block(function (){
+      const self = this;
+      self.named('header');
+      self.onContext('literal');
+      self.process(function (parent, reader){
+        header = JSON.parse(reader.getString()) || {}
+        return self.createBlock(parent, 'pass', "");
+      });
+    });
+  });
 
   let mark = asciidoctor.convert(code);
-  let header = {
-    "title" : null,
-    "no" : null,
-    "caution" : null
-  }
 
   return { "value" : mark, "header" : header }
 }
@@ -204,6 +194,7 @@ export function markdownCreate(code, config, data, type){
     return markedEx(code, config, data);
   }
 }
+
 // http://asciidoctor.github.io/asciidoctor.js/master/
 // https://github.com/asciidoctor/asciidoctor-browser-extension/blob/f4961737a468ff1d485c5a8db7db29872700ad1e/app/js/vendor/asciidoctor-chart-block-macro.js
 

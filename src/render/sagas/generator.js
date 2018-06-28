@@ -2,6 +2,7 @@ import { call, put, take, select, fork, takeEvery, takeLatest } from 'redux-saga
 import actions from '../actions';
 import { ipcRenderer } from 'electron'
 
+import path from 'path';
 import fs from 'fs';
 import * as markedex from '../../logic/marked-ex.js';
 import * as igxl from '../../logic/igxl.js';
@@ -33,7 +34,8 @@ export function* init(action) {
     )
   ));
 
-  yield markdownAsync({payload : "# markdown"})
+  // yield markdownAsync({payload : "# markdown"})
+  yield readfileAsync({payload : path.join(__dirname, '../../Empty.md')})
 
   yield put(actions.reducerChange(
     (state)=> state.withMutations(m =>

@@ -1,4 +1,9 @@
-= Document Title (Level 0)
+[header]
+....
+{
+  "title" : "a"
+}
+....
 
 == Level 1 Section Title
 

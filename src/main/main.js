@@ -20,7 +20,7 @@ app.on('ready', ()=> {
   // });
 
   createWindow()
-  createShortcut();
+  //createShortcut();
 });
 
 app.on('activate', ()=> {

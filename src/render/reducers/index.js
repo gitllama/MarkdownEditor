@@ -1,5 +1,6 @@
 import Immutable from 'immutable';
 
+
 const initialState = Immutable.Map({
   busy : true,
   config : null,

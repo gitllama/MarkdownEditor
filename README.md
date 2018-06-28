@@ -40,7 +40,6 @@
 ## Future
 
 - wfmapのtext/mark修正
-- 初期ファイル名をemptyに
 - wfmapのstringのand処理
 - memoryの自動入れ替え・選択
 - fileの直接参照
