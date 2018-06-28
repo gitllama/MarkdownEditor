@@ -10,6 +10,7 @@ import wfmap from 'wfmap';
 import * as jsdiff from 'diff';
 import * as igxl from './igxl.js';
 import deepAssign from 'deep-assign';
+import Asciidoctor from 'asciidoctor.js';
 
 var plotlylayout = {
   autosize: false,
@@ -134,12 +135,91 @@ function markedEx(code, config, data){
   return { "value" : mark, "header" : header }
 }
 
+function asciidoctorEx(code, config, data){
+  let asciidoctor = Asciidoctor();
+
+  asciidoctor.Extensions.register(function (){
+    this.block(function (){
+      const self = this;
+      self.named('shout'); //[named]
+      self.onContext('paragraph');//div class name
+      self.process(function (parent, reader){
+        const lines = reader.getLines().map((l)=>{
+          return l.toUpperCase();
+        });
+        return self.createBlock(parent, 'paragraph', lines);
+      });
+    });
+  });
+
+  asciidoctor.Extensions.register(function (){
+    this.block(function (){
+      const self = this;
+      self.named('mermaid');
+      self.onContext('literal');
+      self.process(function (parent, reader){
+        let mermaidcode = reader.getString()
+        let dst;
+        mermaid.mermaidAPI.render(
+          `mermaid-${Date.now()}`,
+          mermaidcode,
+          (svgCode)=>( dst = svgCode )
+        )
+        return self.createBlock(parent, 'pass', dst);
+      });
+    });
+  });
+
+  // asciidoctor.Extensions.register(function (){
+  //   this.block(function (){
+  //     const self = this;
+  //     self.named('mermaid');
+  //     self.onContext('literal');
+  //     self.process(function (parent, reader){
+  //       let mermaidcode = reader.getString()
+  //       return self.createBlock(parent, 'pass', highlightlanguage["wfmap"]());
+  //     });
+  //   });
+  // });
+
+  let mark = asciidoctor.convert(code);
+  let header = {
+    "title" : null,
+    "no" : null,
+    "caution" : null
+  }
+
+  return { "value" : mark, "header" : header }
+}
 
 
-export function markdownCreate(code, config, data){
+
+export function markdownCreate(code, config, data, type){
 
   initMermaid(config);
-  let mark = markedEx(code, config, data);
-
-  return mark;
+  let mark;
+  if(type == "adoc"){
+    return asciidoctorEx(code, config, data);
+  }else{
+    return markedEx(code, config, data);
+  }
 }
+// http://asciidoctor.github.io/asciidoctor.js/master/
+// https://github.com/asciidoctor/asciidoctor-browser-extension/blob/f4961737a468ff1d485c5a8db7db29872700ad1e/app/js/vendor/asciidoctor-chart-block-macro.js
+
+
+
+
+// var asciidoctor = Asciidoctor()
+// asciidoctor.Extensions.register(function () {
+//   this.treeProcessor(function () {
+//     var self = this
+//     self.process(function (doc) {
+//       var blocks = doc.getBlocks()
+//       for(var i=0;i<blocks.length;i++){
+//         blocks[i].id('id', 'p'+i)
+//       }
+//       return doc
+//     })
+//   })
+// })

@@ -6,7 +6,6 @@ import fs from 'fs';
 import * as markedex from '../../logic/marked-ex.js';
 import * as igxl from '../../logic/igxl.js';
 import deepAssign from 'deep-assign';
-import Asciidoctor from 'asciidoctor.js';
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -124,35 +123,7 @@ export function* markdownAsync(action) {
   let config = yield select(state => state.get("config"))
   let data = yield select(state => state.get("memory"))
 
-  let dst;
-  if(file == "adoc"){
-    let asciidoctor = Asciidoctor();
-    asciidoctor.Extensions.register(function (){
-      this.block(function (){
-        const self = this;
-        self.named('shout'); //[named]
-        self.onContext('literalblock');//div class name
-        self.process(function (parent, reader){
-          const lines = reader.getLines().map((l)=>{
-            return l.toUpperCase();
-          });
-          console.log(reader.getString())
-          return self.createBlock(parent, 'literalblock', lines);
-        });
-      });
-    });
-    dst = ({
-      "header" : {
-        "title" : null,
-        "no" : null,
-        "caution" : null
-      },
-      "value" : asciidoctor.convert(src)
-    })
-  }else{
-    dst = markedex.markdownCreate(src, config["marked-ex"], data);
-  }
-
+  let dst = markedex.markdownCreate(src, config["marked-ex"], data, file);
 
   yield put(actions.reducerChange(
     (state)=> state.withMutations(m =>
@@ -168,7 +139,6 @@ export function* markdownAsync(action) {
 
 export function* syncHTMLAsync(action) {
 
-
     yield put(actions.reducerChange(
       (state)=> state.withMutations(m =>
         m.set('html', checkObject(action.payload, ["value"]))
@@ -178,19 +148,3 @@ export function* syncHTMLAsync(action) {
       )));
 
 }
-
-// http://asciidoctor.github.io/asciidoctor.js/master/
-
-// var asciidoctor = Asciidoctor()
-// asciidoctor.Extensions.register(function () {
-//   this.treeProcessor(function () {
-//     var self = this
-//     self.process(function (doc) {
-//       var blocks = doc.getBlocks()
-//       for(var i=0;i<blocks.length;i++){
-//         blocks[i].id('id', 'p'+i)
-//       }
-//       return doc
-//     })
-//   })
-// })

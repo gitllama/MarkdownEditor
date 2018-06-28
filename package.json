@@ -27,9 +27,7 @@
       "react"
     ]
   },
-  "dependencies": {
-    "asciidoctor.js": "^1.5.7-beta.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
@@ -56,6 +54,7 @@
     "electron": "^2.0.0",
     "electron-packager": "^12.1.0",
     "webpack": "^4.12.1",
-    "webpack-cli": "^2.0.11"
+    "webpack-cli": "^2.0.11",
+    "asciidoctor.js": "^1.5.7-beta.1"
   }
 }
