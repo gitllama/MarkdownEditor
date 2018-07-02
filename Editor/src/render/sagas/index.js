@@ -31,7 +31,7 @@ const takeSagas = {
 
   ['READFILE_ASYNCLATEST'] : g.readfileAsync,
   ['SAVEFILE_ASYNCLATEST'] : g.savefileAsync,
-
+  ['PRINT_HTML_ASYNCLATEST'] : g.savehtmlAsync,
   ['READDATALOG_ASYNCLATEST'] : g.readToMemoryAsync,
 
 

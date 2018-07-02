@@ -12,7 +12,8 @@ const menu = require('./menu.js');
 class WindowManager {
   constructor(path) {
     this.windowDocker = {}
-    this.configJson = JSON.parse(fs.readFileSync(path.join(__dirname, path)));
+    const json = fs.readFileSync(path).toString();
+    this.configJson = JSON.parse(json);
   }
   mainWindow() {
     return this.windowDocker["main"];
@@ -28,7 +29,7 @@ class WindowManager {
       webPreferences : {
         additionalArguments : [type]
       }
-    }, configJson['window']);
+    }, this.configJson['window']);
 
     this.windowDocker[type] = new BrowserWindow(_config);
     this.windowDocker[type].loadURL(url.format({
@@ -38,7 +39,7 @@ class WindowManager {
     }));
 
     this.windowDocker[type].webContents.on('did-finish-load',()=>{
-      this.windowDocker[type].webContents.send('INIT_ASYNCLATEST', configJson);
+      this.windowDocker[type].webContents.send('INIT_ASYNCLATEST', this.configJson);
     });
     this.windowDocker[type].on('closed', ()=>{
       this.windowDocker[type] = null
@@ -66,7 +67,7 @@ class WindowManager {
     });
   }
 }
-const win = new WindowManager('../config.json');
+const win = new WindowManager(path.join(__dirname, '../config.json'));
 
 app.on('ready', ()=> {
 

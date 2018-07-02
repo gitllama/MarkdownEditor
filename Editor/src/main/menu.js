@@ -40,6 +40,22 @@ exports.createMenu = function(win) {
           accelerator: 'CmdOrCtrl+P',
           click () { logic.printpdf(win.mainWindow()); }
         },
+        {
+          label: 'PrintHTML',
+          accelerator: 'CmdOrCtrl+P',
+          click () {
+            let dst = dialog.showSaveDialog(null, {
+              title: 'Save As',
+              defaultPath: '.',
+              filters: [
+                  {name: 'html file', extensions: ['html']}
+              ]
+            });
+            if(dst){
+              win.sendMain('print-html', dst);
+            }
+          }
+        },
         { type: 'separator' },
         {
           label: 'Exit',

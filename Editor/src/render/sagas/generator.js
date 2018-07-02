@@ -27,6 +27,16 @@ function checkObject(obj, arr){
   return obj[arr[0]];
 }
 
+function readfile(params){
+  return new Promise((resolve, reject) => {
+    let reader = new FileReader();
+    reader.onload = function(evt){
+      resolve(evt.target.result);
+    }
+    reader.readAsText(params);
+  });
+}
+
 export function* init(action) {
   yield put(actions.reducerChange(
     (state)=> state.withMutations(m =>
@@ -73,29 +83,32 @@ export function* readfileAsync(action) {
   yield put(actions.reducerChange(
     (state)=> state.withMutations(m => m.set('busy', true))
   ));
+  let dst = "";
+  let filepath = null;
+  if(typeof action.payload === 'string'){
+    dst = fs.readFileSync(action.payload).toString();
+    filepath = action.payload;
+  }else{
+    //D&D
+    dst = yield call(readfile, action.payload)
+    filepath = action.payload.path;
+    console.log(action.payload.path)
+  }
 
-  let hoge = fs.readFileSync(action.payload).toString()
-
-  yield put(actions.reducerChange(
-    (state)=> state.withMutations(m =>
-      m.set('filename', action.payload)
-    )
-  ));
-
-  yield markdownAsync({payload : hoge})
+  yield markdownAsync({payload : dst})
 
   yield put(actions.reducerChange(
     (state)=> state.withMutations(m =>
       m.set('busy', false)
+       .set('filename', filepath)
     )
   ));
 
-  ipcRenderer.send("change-title", action.payload)
+  ipcRenderer.send("change-title", filepath)
   console.log("read!")
 }
 
 export function* savefileAsync(action) {
-  console.log(action)
   try{
     let fullpath = action.payload != null
                  ? action.payload                                 // from Save As
@@ -112,6 +125,17 @@ export function* savefileAsync(action) {
     // ipcRenderer.send("save-file", filename)
 
     console.log(`save! : ${fullpath}`)
+  }catch(e){
+    console.log(e)
+  }
+}
+
+export function* savehtmlAsync(action) {
+  try{
+    let txt = yield select(state => state.get("html"))
+    let html = `<html>\n<body>\n${txt}\n</body></html>`
+    fs.writeFileSync(action.payload ,html);
+    console.log(`save! : ${action.payload}`)
   }catch(e){
     console.log(e)
   }

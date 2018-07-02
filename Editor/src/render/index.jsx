@@ -47,6 +47,12 @@ ipcRenderer.on("page-change", (event, param) =>{
 
 switch(process.argv[process.argv.length - 1]){
   case 'main':
+    ipcRenderer.on("print-html", (event, param) =>{
+      store.dispatch({
+        type  : "PRINT_HTML_ASYNCLATEST",
+        payload : param
+      });
+    });
     ipcRenderer.on("view-change", (event, param) =>{
       store.dispatch({
         type  : "VIEW_CHANGE",

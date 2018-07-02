@@ -15,5 +15,7 @@ export default createActions(
 
   'PREVIEW_CHANGE',
   'PAGE_CHANGE',
-  'SYNC_HTML_ASYNCLATEST'
+  'SYNC_HTML_ASYNCLATEST',
+
+  'PRINT_HTML_ASYNCLATEST',
 );
